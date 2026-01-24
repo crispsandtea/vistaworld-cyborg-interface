@@ -1,9 +1,57 @@
-// Blue orb cursor that follows mouse
-   const cursor = document.createElement('div');
-   cursor.style.cssText = 'position: fixed; width: 20px; height: 20px; background: #0088ff; border-radius: 50%; pointer-events: none; z-index: 9999; box-shadow: 0 0 20px #0088ff;';
-   document.body.appendChild(cursor);
-   
-   document.addEventListener('mousemove', e => {
-     cursor.style.left = e.clientX - 10 + 'px';
-     cursor.style.top = e.clientY - 10 + 'px';
-   });
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+  cursor: none;
+}
+
+#boot-sequence {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+}
+
+#boot-text {
+  font-size: 18px;
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+#prompt {
+  font-size: 16px;
+}
+
+#user-input {
+  background: transparent;
+  border: none;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  width: 30px;
+  outline: none;
+  text-align: center;
+  margin-left: 10px;
+  padding: 5px;
+}
+
+#cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: #0088ff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 20px #0088ff;
+  transform: translate(-50%, -50%);
+}
