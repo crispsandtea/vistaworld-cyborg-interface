@@ -1,0 +1,8 @@
+{
+  "name": "vistaworld",
+  "version": "1.0.0",
+  "description": "System Unit 393AP Consciousness Interface",
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}
