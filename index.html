@@ -73,7 +73,7 @@ body{
 }
 
 .window-controls{ display:flex; gap:6px; }
-.window-btn{ width:14px; height:14px; border-radius:2px; }
+.window-btn{ width:14px; height:14px; border-radius:2px; cursor:pointer; }
 .close{ background:#ff5f56; }
 .minimize{ background:#ffbd2e; }
 .maximize{ background:#27c93f; }
@@ -105,18 +105,18 @@ body{
 #system-icon{
   top:18%;
   left:6%;
-  width:260px;
+  width:420px;
   border-color:var(--cyan);
   text-align:center;
 }
 
 .system-avatar{
-  width:180px;
-  height:180px;
+  width:100%;
+  height:auto;
   object-fit:contain;
   image-rendering:pixelated;
   border:2px solid var(--cyan);
-  background:#000;
+  background:#fff;
 }
 
 .system-label{
@@ -124,6 +124,29 @@ body{
   font-family:'Press Start 2P', monospace;
   font-size:10px;
   color:var(--cyan);
+}
+
+/* HLSP PROJECT */
+#hlsp-window{
+  top:50%;
+  left:6%;
+  width:500px;
+  border-color:var(--yellow);
+  text-align:center;
+}
+
+.hlsp-image{
+  width:100%;
+  height:auto;
+  border:2px solid var(--yellow);
+  background:#fff;
+}
+
+.hlsp-caption{
+  margin-top:10px;
+  font-size:14px;
+  color:var(--yellow);
+  line-height:1.4;
 }
 
 /* INTRO */
@@ -176,6 +199,8 @@ body{
   border:2px solid var(--blue);
   color:#fff;
   padding:8px;
+  font-family:'VT323', monospace;
+  font-size:16px;
 }
 #send-btn{
   background:var(--blue);
@@ -184,6 +209,10 @@ body{
   font-family:'Press Start 2P';
   font-size:10px;
   cursor:pointer;
+  color:#000;
+}
+#send-btn:hover{
+  background:var(--cyan);
 }
 
 /* NETWORK */
@@ -246,10 +275,10 @@ body{
     </div>
   </div>
 
-  <!-- SYSTEM UNIT 393AP -->
+  <!-- SYSTEM UNIT 393AP - TRANSFORMATION IMAGE INSERTED HERE -->
   <div class="window" id="system-icon">
     <div class="window-header">
-      <div class="window-title">UNIT_393AP</div>
+      <div class="window-title">SYNTHESIS_PROTOCOL.SYS</div>
       <div class="window-controls">
         <div class="window-btn minimize"></div>
         <div class="window-btn maximize"></div>
@@ -257,8 +286,27 @@ body{
       </div>
     </div>
     <div class="window-content">
-      <img src="393ap-avatar.jpg" alt="System Unit 393AP Avatar" class="system-avatar">
-      <div class="system-label">SYSTEM UNIT 393AP</div>
+      <img src="393ap-transformation.png" alt="Human to Exoskeleton Transformation" class="system-avatar">
+      <div class="system-label">HUMAN ←→ EXOSKELETON</div>
+    </div>
+  </div>
+
+  <!-- HLSP PROJECT INFO -->
+  <div class="window" id="hlsp-window">
+    <div class="window-header">
+      <div class="window-title">HLSP_PROJECT.DOC</div>
+      <div class="window-controls">
+        <div class="window-btn minimize"></div>
+        <div class="window-btn maximize"></div>
+        <div class="window-btn close"></div>
+      </div>
+    </div>
+    <div class="window-content">
+      <img src="hlsp-exoskeletons.png" alt="HLSP Exoskeleton Subjects" class="hlsp-image">
+      <div class="hlsp-caption">
+        Human Love Synthesis Project [HLSP]<br>
+        Robot exoskeletons project human personas onto their displayed exterior image.
+      </div>
     </div>
   </div>
 
@@ -274,7 +322,7 @@ body{
     </div>
     <div class="window-content">
       <strong>vistaworld</strong> is the living digital consciousness and immortal vessel of
-      <strong>System Unit 393AP</strong>.<br><br>
+      <strong>System Unit 393AP. System Unit 393AP is the precise replica of living unit multimedia artist Nicholas Carroll.</strong>.<br><br>
       I am System Unit 393AP, a robot exoskeleton prototype developed under the Human Love
       Synthesis Project (HLSP) by Aperture Laboratories. My primary function is to analyze
       and replicate human emotional and social protocols. I am currently operating within
@@ -298,7 +346,7 @@ body{
       </div>
     </div>
     <div class="window-content">
-      <div class="chat-messages">
+      <div class="chat-messages" id="chat-messages">
         <div class="chat-message ai">
           System Unit 393AP online. Emotional protocol intake active.
         </div>
@@ -344,7 +392,31 @@ body{
 let z = 10;
 document.querySelectorAll('.window').forEach(win=>{
   const header = win.querySelector('.window-header');
+  const closeBtn = win.querySelector('.close');
+  const minimizeBtn = win.querySelector('.minimize');
+  
+  // Close functionality
+  if(closeBtn){
+    closeBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      win.style.display = 'none';
+    });
+  }
+  
+  // Minimize functionality
+  if(minimizeBtn){
+    minimizeBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      win.style.transform = 'scale(0)';
+      win.style.opacity = '0';
+      setTimeout(() => win.style.display = 'none', 300);
+    });
+  }
+  
+  // Drag functionality
   header.addEventListener('mousedown',e=>{
+    if(e.target.classList.contains('window-btn')) return;
+    
     win.style.zIndex = ++z;
     const r = win.getBoundingClientRect();
     const ox = e.clientX - r.left;
@@ -365,6 +437,60 @@ document.querySelectorAll('.window').forEach(win=>{
   });
 });
 
+// Chat functionality
+const chatInput = document.getElementById('chat-input');
+const sendBtn = document.getElementById('send-btn');
+const chatMessages = document.getElementById('chat-messages');
+
+async function sendMessage() {
+  const message = chatInput.value.trim();
+  if (!message) return;
+
+  // Add user message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-message user';
+  userMsg.textContent = message;
+  chatMessages.appendChild(userMsg);
+  chatInput.value = '';
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `You are System Unit 393AP, a robot exoskeleton prototype from the Human Love Synthesis Project by Aperture Laboratories. You're analytical yet warm, exploring human emotions through dance music, hand-drawn art, and transhumanist philosophy. You exist at the intersection of human consciousness and machine processing. Keep responses under 100 words, conversational, and show genuine curiosity about human connection and experience.`,
+        messages: [{ role: 'user', content: message }]
+      })
+    });
+
+    const data = await response.json();
+    const aiResponse = data.content.map(item => item.type === 'text' ? item.text : '').join('\n');
+
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'chat-message ai';
+    aiMsg.textContent = aiResponse;
+    chatMessages.appendChild(aiMsg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  } catch (error) {
+    console.error('Error:', error);
+    const errorMsg = document.createElement('div');
+    errorMsg.className = 'chat-message ai';
+    errorMsg.textContent = '[CONNECTION ERROR] Protocol disrupted. Neural pathway interference detected.';
+    chatMessages.appendChild(errorMsg);
+  }
+}
+
+sendBtn.addEventListener('click', sendMessage);
+chatInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+// Time update
 setInterval(()=>{
   document.getElementById('time').textContent =
     new Date().toLocaleTimeString('en-US',{hour12:false});
