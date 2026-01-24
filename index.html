@@ -1,13 +1,20 @@
 <!DOCTYPE html>
-   <html>
-   <head>
-     <title>SYSTEM: UNIT 393AP</title>
-     <link rel="stylesheet" href="style.css">
-   </head>
-   <body>
-     <div id="interface">
-       <p id="init-text">SYSTEM INITIALIZING...</p>
-     </div>
-     <script src="script.js"></script>
-   </body>
-   </html>
+<html>
+<head>
+  <title>SYSTEM: UNIT 393AP</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="boot-sequence">
+    <div id="boot-text"></div>
+    <div id="prompt" style="display: none;">
+      <span id="prompt-text">INITIALIZE INTERFACE? [Y/N]</span>
+      <input type="text" id="user-input" maxlength="1" autofocus style="background: #111; border: 1px solid #00ff00;">
+    </div>
+  </div>
+  
+  <div id="cursor"></div>
+  
+  <script src="script.js"></script>
+</body>
+</html>s
