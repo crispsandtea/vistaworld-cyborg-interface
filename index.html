@@ -23,10 +23,9 @@ html,body{width:100%;height:100%;overflow:hidden;}
 body{
   background:#000;
   font-family:'VT323', monospace;
-  cursor: none; /* hide default cursor for neon */
+  cursor: none;
 }
 
-/* NEON CURSOR */
 #neon-cursor {
   position: fixed;
   width: 20px;
@@ -40,7 +39,6 @@ body{
   transition: transform 0.05s ease, box-shadow 0.2s ease;
 }
 
-/* BACKGROUND */
 .desktop-bg{
   position:fixed;
   inset:0;
@@ -54,7 +52,6 @@ body{
   background:rgba(0,0,0,0.45);
 }
 
-/* CRT SCANLINES + FLICKER */
 .crt-overlay {
   position: fixed;
   inset:0;
@@ -74,7 +71,6 @@ body{
   100%{opacity:0.05;}
 }
 
-/* WINDOWS */
 .window{
   position:absolute;
   background:rgba(15,15,15,0.95);
@@ -117,7 +113,6 @@ body{
   padding:12px;
 }
 
-/* CONTENT */
 .logo-text{
   font-family:'Press Start 2P', monospace;
   font-size:48px;
@@ -147,7 +142,6 @@ body{
 }
 .network-grid a:hover{transform:scale(1.2);}
 
-/* TASKBAR */
 .taskbar{
   position:fixed;
   bottom:0;
@@ -163,7 +157,6 @@ body{
 }
 .taskbar-time{margin-left:auto;color:var(--magenta);}
 
-/* CHAT INTERFACE */
 #chat-messages{
   height:300px;
   overflow-y:auto;
@@ -315,7 +308,6 @@ body{
 </div>
 
 <script>
-/* SMART WINDOW LAYOUT */
 function layoutWindows() {
   const wins = [...document.querySelectorAll('.window')];
   const cols = 3;
@@ -336,7 +328,6 @@ function layoutWindows() {
 window.addEventListener('load', layoutWindows);
 window.addEventListener('resize', layoutWindows);
 
-/* DRAGGING */
 let z = 10;
 document.querySelectorAll('.window').forEach(win => {
   const h = win.querySelector('.window-header');
@@ -353,14 +344,12 @@ document.querySelectorAll('.window').forEach(win => {
   });
 });
 
-/* CLOCK + DATE */
 setInterval(() => {
   const now = new Date();
   document.getElementById('time').textContent =
     now.toLocaleDateString('en-US') + " " + now.toLocaleTimeString('en-US', { hour12: false });
 }, 1000);
 
-/* NEON CURSOR */
 const cursor = document.getElementById('neon-cursor');
 document.addEventListener('mousemove', e => {
   const x = e.clientX + Math.sin(Date.now()/150)*5;
@@ -368,22 +357,20 @@ document.addEventListener('mousemove', e => {
   cursor.style.transform = `translate(${x}px,${y}px)`;
 });
 
-/* PROCEDURAL CYBORG HUM */
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioContext();
 const osc = audioCtx.createOscillator();
 const gain = audioCtx.createGain();
 osc.type = 'sine';
-osc.frequency.value = 60; // base hum
+osc.frequency.value = 60;
 osc.connect(gain);
 gain.connect(audioCtx.destination);
-gain.gain.value = 0.02; // subtle
+gain.gain.value = 0.02;
 osc.start();
 setInterval(() => {
-  osc.frequency.value = 60 + (Math.random()*5-2.5); // slight random pitch
+  osc.frequency.value = 60 + (Math.random()*5-2.5);
 }, 200);
 
-/* CHAT FUNCTIONALITY */
 const chatMessages = document.getElementById('chat-messages');
 const chatInput = document.getElementById('chat-input');
 const sendBtn = document.getElementById('send-btn');
@@ -392,7 +379,6 @@ async function sendMessage() {
   const userMsg = chatInput.value.trim();
   if (!userMsg) return;
 
-  // Display user's message
   const userDiv = document.createElement('div');
   userDiv.className = 'chat-msg user-msg';
   userDiv.textContent = '> ' + userMsg;
@@ -409,26 +395,20 @@ async function sendMessage() {
 
     const data = await response.json();
 
-    // FIXED: Read AI response correctly
-   let aiResponse = "";
-
-// If data is just a string
-if (typeof data === "string") {
-  aiResponse = data;
-}
-// If data has a 'message' field (common for serverless functions)
-else if (data?.message) {
-  aiResponse = data.message;
-}
-// If data has an 'error'
-else if (data?.error) {
-  aiResponse = "System error: " + data.error;
-}
-// Fallback: stringify any object to avoid [object Object]
-else {
-  aiResponse = JSON.stringify(data);
-}
-
+    let aiResponse = "";
+    if (data?.completion?.output?.length > 0) {
+      aiResponse = data.completion.output
+        .map(item => item.type === "output_text" ? item.text : "")
+        .join("\n");
+    } else if (data?.error) {
+      const errorMsg = typeof data.error === 'string' 
+        ? data.error 
+        : (data.error.message || JSON.stringify(data.error));
+      aiResponse = "System error: " + errorMsg;
+    } else {
+      console.log("Unexpected response:", data);
+      aiResponse = "No response from 393AP (check console for details)";
+    }
 
     const aiDiv = document.createElement('div');
     aiDiv.className = 'chat-msg ai-msg';
@@ -449,9 +429,7 @@ sendBtn.addEventListener('click', sendMessage);
 chatInput.addEventListener('keypress', (e) => { 
   if (e.key === 'Enter') sendMessage(); 
 });
-
 </script>
 
 </body>
 </html>
-
