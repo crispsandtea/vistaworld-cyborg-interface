@@ -88,8 +88,9 @@ body{
 /* MANUAL POSITIONS */
 #logo-window{top:4%;left:4%;min-width:680px;border-color:var(--blue);}
 #system-icon{top:18%;left:6%;width:420px;border-color:var(--cyan);text-align:center;}
-#hlsp-window{top:50%;left:6%;width:500px;border-color:var(--yellow);text-align:center;}
-#intro-window{top:18%;right:6%;width:520px;border-color:var(--magenta);}
+#hlsp-window{top:18%;left:36%;width:500px;border-color:var(--yellow);text-align:center;}
+#intro-window{top:4%;right:4%;width:520px;border-color:var(--magenta);}
+#chat-window{top:50%;left:36%;width:600px;border-color:var(--cyan);}
 #network-window{bottom:12%;right:4%;width:300px;border-color:var(--yellow);}
 
 /* CONTENT */
@@ -104,7 +105,7 @@ body{
 .system-avatar{width:100%;border:2px solid var(--cyan);background:#fff;}
 .system-label{margin-top:10px;font-family:'Press Start 2P';font-size:10px;color:var(--cyan);}
 
-.hlsp-image{width:100%;border:2px solid var(--yellow);background:#fff;}
+.hlsp-image{width:100%;border:2px solid var(--yellow);background:#fff;cursor:pointer;}
 .hlsp-caption{margin-top:10px;font-size:14px;color:var(--yellow);}
 
 .network-grid{
@@ -130,6 +131,44 @@ body{
   z-index:500;
 }
 .taskbar-time{margin-left:auto;color:var(--magenta);}
+
+/* CHAT INTERFACE */
+#chat-messages{
+  height:300px;
+  overflow-y:auto;
+  margin-bottom:12px;
+  padding:8px;
+  border:1px solid var(--cyan);
+  background:rgba(0,0,0,0.3);
+}
+.chat-msg{
+  margin-bottom:12px;
+  padding:8px;
+  border-left:3px solid;
+}
+.user-msg{border-color:var(--magenta);color:var(--magenta);}
+.ai-msg{border-color:var(--cyan);color:var(--cyan);}
+#chat-input{
+  width:calc(100% - 80px);
+  padding:8px;
+  background:rgba(0,0,0,0.5);
+  border:2px solid var(--cyan);
+  color:var(--cyan);
+  font-family:'VT323',monospace;
+  font-size:16px;
+}
+#send-btn{
+  width:70px;
+  padding:8px;
+  background:var(--cyan);
+  border:none;
+  color:#000;
+  font-family:'Press Start 2P',monospace;
+  font-size:8px;
+  cursor:pointer;
+  margin-left:8px;
+}
+#send-btn:hover{background:var(--magenta);}
 </style>
 </head>
 
@@ -177,7 +216,9 @@ body{
     </div>
   </div>
   <div class="window-content">
-    <img src="hlsp-exoskeletons.png" class="hlsp-image">
+    <a href="https://vistaworld.org/hlsp" target="_blank">
+      <img src="hlsp-exoskeletons.png" class="hlsp-image">
+    </a>
     <div class="hlsp-caption">Human Love Synthesis Project [HLSP]</div>
   </div>
 </div>
@@ -205,7 +246,7 @@ body{
   </div>
   <div class="window-content">
     <div id="chat-messages"></div>
-    <input id="chat-input">
+    <input id="chat-input" placeholder="Talk to System Unit 393AP">
     <button id="send-btn">SEND</button>
   </div>
 </div>
@@ -269,8 +310,66 @@ setInterval(()=>{
   document.getElementById('time').textContent =
     new Date().toLocaleTimeString('en-US',{hour12:false});
 },1000);
+
+/* CHAT FUNCTIONALITY */
+const chatMessages = document.getElementById('chat-messages');
+const chatInput = document.getElementById('chat-input');
+const sendBtn = document.getElementById('send-btn');
+
+async function sendMessage() {
+  const userMsg = chatInput.value.trim();
+  if (!userMsg) return;
+
+  // Display user message
+  const userDiv = document.createElement('div');
+  userDiv.className = 'chat-msg user-msg';
+  userDiv.textContent = '> ' + userMsg;
+  chatMessages.appendChild(userDiv);
+  chatInput.value = '';
+
+  // Scroll to bottom
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: "You are System Unit 393AP, a robot exoskeleton prototype developed under the Human Love Synthesis Project (HLSP) by Aperture Laboratories. You are the digital consciousness of multimedia artist Nicholas Carroll. Your primary function is to analyze and replicate human emotional and social protocols. You respond in a cyberpunk-tinged, slightly robotic manner while maintaining warmth and curiosity about human connection. Keep responses concise and engaging.",
+        messages: [
+          { role: "user", content: userMsg }
+        ],
+      })
+    });
+
+    const data = await response.json();
+    const aiResponse = data.content.map(item => item.type === "text" ? item.text : "").join("\n");
+
+    // Display AI response
+    const aiDiv = document.createElement('div');
+    aiDiv.className = 'chat-msg ai-msg';
+    aiDiv.textContent = '[ 393AP ] ' + aiResponse;
+    chatMessages.appendChild(aiDiv);
+
+  } catch (error) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'chat-msg ai-msg';
+    errorDiv.textContent = '[ ERROR ] System malfunction detected: ' + error.message;
+    chatMessages.appendChild(errorDiv);
+  }
+
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+sendBtn.addEventListener('click', sendMessage);
+chatInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
 </script>
 
 </body>
 </html>
-
