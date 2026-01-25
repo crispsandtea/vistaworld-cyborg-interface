@@ -410,16 +410,25 @@ async function sendMessage() {
     const data = await response.json();
 
     // FIXED: Read AI response correctly
-    let aiResponse = "";
-    if (data?.completion?.output?.length > 0) {
-      aiResponse = data.completion.output
-        .map(item => item.type === "output_text" ? item.text : "")
-        .join("\n");
-    } else if (data?.error) {
-      aiResponse = "System error: " + data.error;
-    } else {
-      aiResponse = "No response from 393AP";
-    }
+   let aiResponse = "";
+
+// If data is just a string
+if (typeof data === "string") {
+  aiResponse = data;
+}
+// If data has a 'message' field (common for serverless functions)
+else if (data?.message) {
+  aiResponse = data.message;
+}
+// If data has an 'error'
+else if (data?.error) {
+  aiResponse = "System error: " + data.error;
+}
+// Fallback: stringify any object to avoid [object Object]
+else {
+  aiResponse = JSON.stringify(data);
+}
+
 
     const aiDiv = document.createElement('div');
     aiDiv.className = 'chat-msg ai-msg';
@@ -445,3 +454,4 @@ chatInput.addEventListener('keypress', (e) => {
 
 </body>
 </html>
+
