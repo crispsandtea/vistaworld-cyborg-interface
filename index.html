@@ -409,10 +409,9 @@ async function sendMessage() {
 
     const data = await response.json();
 
-    // FIX: Extract text from Anthropic response
+    // FIXED: Read AI response correctly
     let aiResponse = "";
     if (data?.completion?.output?.length > 0) {
-      // The v1 API outputs an array of messages in completion.output
       aiResponse = data.completion.output
         .map(item => item.type === "output_text" ? item.text : "")
         .join("\n");
@@ -446,7 +445,3 @@ chatInput.addEventListener('keypress', (e) => {
 
 </body>
 </html>
-
-
-
-
