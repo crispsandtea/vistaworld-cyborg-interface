@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=DM+Mono&display=swap" rel="stylesheet">
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-html, body { width:100%; height:100%; overflow:hidden; }
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
 
 :root{
   --cyan:#00ffea;
@@ -72,11 +72,11 @@ body{
   font-size:10px;
 }
 
-.window-controls{ display:flex; gap:6px; }
-.window-btn{ width:14px; height:14px; border-radius:2px; cursor:pointer; }
-.close{ background:#ff5f56; }
-.minimize{ background:#ffbd2e; }
-.maximize{ background:#27c93f; }
+.window-controls{display:flex;gap:6px;}
+.window-btn{width:14px;height:14px;border-radius:2px;cursor:pointer;}
+.close{background:#ff5f56;}
+.minimize{background:#ffbd2e;}
+.maximize{background:#27c93f;}
 
 .window-content{
   padding:16px;
@@ -86,11 +86,34 @@ body{
 }
 
 /* MANUAL POSITIONS */
-#logo-window{ top:4%; left:4%; min-width:680px; border-color:var(--blue); }
-#system-icon{ top:18%; left:6%; width:420px; border-color:var(--cyan); text-align:center; }
-#hlsp-window{ top:50%; left:6%; width:500px; border-color:var(--yellow); text-align:center; }
-#intro-window{ top:18%; right:6%; width:520px; border-color:var(--magenta); }
-#network-window{ bottom:12%; right:4%; width:300px; border-color:var(--yellow); }
+#logo-window{top:4%;left:4%;min-width:680px;border-color:var(--blue);}
+#system-icon{top:18%;left:6%;width:420px;border-color:var(--cyan);text-align:center;}
+#hlsp-window{top:50%;left:6%;width:500px;border-color:var(--yellow);text-align:center;}
+#intro-window{top:18%;right:6%;width:520px;border-color:var(--magenta);}
+#network-window{bottom:12%;right:4%;width:300px;border-color:var(--yellow);}
+
+/* CONTENT */
+.logo-text{
+  font-family:'Press Start 2P', monospace;
+  font-size:48px;
+  white-space:nowrap;
+  color:var(--blue);
+  text-shadow:3px 3px 0 var(--magenta),6px 6px 0 var(--cyan);
+}
+
+.system-avatar{width:100%;border:2px solid var(--cyan);background:#fff;}
+.system-label{margin-top:10px;font-family:'Press Start 2P';font-size:10px;color:var(--cyan);}
+
+.hlsp-image{width:100%;border:2px solid var(--yellow);background:#fff;}
+.hlsp-caption{margin-top:10px;font-size:14px;color:var(--yellow);}
+
+.network-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  text-align:center;
+}
+.network-grid a{color:var(--yellow);font-size:28px;text-decoration:none;}
 
 /* TASKBAR */
 .taskbar{
@@ -106,10 +129,7 @@ body{
   padding:0 20px;
   z-index:500;
 }
-.taskbar-time{
-  margin-left:auto;
-  color:var(--magenta);
-}
+.taskbar-time{margin-left:auto;color:var(--magenta);}
 </style>
 </head>
 
@@ -118,19 +138,91 @@ body{
 
 <div class="desktop">
 
-  <!-- WINDOWS (unchanged markup) -->
-  <!-- LOGO -->
-  <div class="window" id="logo-window">...</div>
+<div class="window" id="logo-window">
+  <div class="window-header">
+    <div class="window-title">LOGO.PNG</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="logo-text">vistaworld</div>
+  </div>
+</div>
 
-  <div class="window" id="system-icon">...</div>
+<div class="window" id="system-icon">
+  <div class="window-header">
+    <div class="window-title">SYNTHESIS_PROTOCOL.SYS</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <img src="393ap-transformation.png" class="system-avatar">
+    <div class="system-label">HUMAN ←→ EXOSKELETON</div>
+  </div>
+</div>
 
-  <div class="window" id="hlsp-window">...</div>
+<div class="window" id="hlsp-window">
+  <div class="window-header">
+    <div class="window-title">HLSP_PROJECT.DOC</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <img src="hlsp-exoskeletons.png" class="hlsp-image">
+    <div class="hlsp-caption">Human Love Synthesis Project [HLSP]</div>
+  </div>
+</div>
 
-  <div class="window" id="intro-window">...</div>
+<div class="window" id="intro-window">
+  <div class="window-header">
+    <div class="window-title">VISTAWORLD.TXT</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">System Unit 393AP online.</div>
+</div>
 
-  <div class="window" id="chat-window">...</div>
+<div class="window" id="chat-window">
+  <div class="window-header">
+    <div class="window-title">INTERFACE :: 393AP</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div id="chat-messages"></div>
+    <input id="chat-input">
+    <button id="send-btn">SEND</button>
+  </div>
+</div>
 
-  <div class="window" id="network-window">...</div>
+<div class="window" id="network-window">
+  <div class="window-header">
+    <div class="window-title">GLOBAL NETWORK</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="network-grid">🌐 🌐 🌐 🌐 🌐 🌐</div>
+  </div>
+</div>
 
 </div>
 
@@ -140,70 +232,35 @@ body{
 </div>
 
 <script>
-/* AUTO-CASCADE WINDOWS */
-let offsetX = 40;
-let offsetY = 40;
-let step = 60;
-
-document.querySelectorAll('.window').forEach((win, i) => {
-  const style = getComputedStyle(win);
-  const hasManualPosition =
-    style.top !== 'auto' ||
-    style.left !== 'auto' ||
-    style.right !== 'auto' ||
-    style.bottom !== 'auto';
-
-  if (!hasManualPosition) {
-    win.style.top = offsetY + i * step + "px";
-    win.style.left = offsetX + i * step + "px";
+/* AUTO-SPACING (SAFE) */
+let autoX=40,autoY=40,step=60;
+document.querySelectorAll('.window').forEach((w,i)=>{
+  if(!w.style.top && !w.style.left && !w.style.right && !w.style.bottom){
+    w.style.left=autoX+i*step+"px";
+    w.style.top=autoY+i*step+"px";
   }
 });
 
-/* DRAG + WINDOW CONTROLS */
-let z = 10;
+/* DRAGGING */
+let z=10;
 document.querySelectorAll('.window').forEach(win=>{
-  const header = win.querySelector('.window-header');
-  const closeBtn = win.querySelector('.close');
-  const minimizeBtn = win.querySelector('.minimize');
-
-  if(closeBtn){
-    closeBtn.addEventListener('click', e=>{
-      e.stopPropagation();
-      win.style.display = 'none';
-    });
-  }
-
-  if(minimizeBtn){
-    minimizeBtn.addEventListener('click', e=>{
-      e.stopPropagation();
-      win.style.transform = 'scale(0)';
-      win.style.opacity = '0';
-      setTimeout(()=>win.style.display='none',300);
-    });
-  }
-
-  header.addEventListener('mousedown',e=>{
-    if(e.target.classList.contains('window-btn')) return;
-    win.style.zIndex = ++z;
-
-    const r = win.getBoundingClientRect();
-    const ox = e.clientX - r.left;
-    const oy = e.clientY - r.top;
-
-    function move(ev){
-      win.style.left = Math.max(0, ev.clientX - ox) + "px";
-      win.style.top = Math.max(0, ev.clientY - oy) + "px";
-      win.style.transform = "none";
-      win.style.opacity = "1";
+  const h=win.querySelector('.window-header');
+  h.addEventListener('mousedown',e=>{
+    if(e.target.classList.contains('window-btn'))return;
+    win.style.zIndex=++z;
+    const r=win.getBoundingClientRect();
+    const ox=e.clientX-r.left;
+    const oy=e.clientY-r.top;
+    function m(ev){
+      win.style.left=ev.clientX-ox+"px";
+      win.style.top=ev.clientY-oy+"px";
     }
-
-    function up(){
-      document.removeEventListener('mousemove', move);
-      document.removeEventListener('mouseup', up);
+    function u(){
+      document.removeEventListener('mousemove',m);
+      document.removeEventListener('mouseup',u);
     }
-
-    document.addEventListener('mousemove', move);
-    document.addEventListener('mouseup', up);
+    document.addEventListener('mousemove',m);
+    document.addEventListener('mouseup',u);
   });
 });
 
@@ -213,5 +270,6 @@ setInterval(()=>{
     new Date().toLocaleTimeString('en-US',{hour12:false});
 },1000);
 </script>
+
 </body>
 </html>
