@@ -89,14 +89,6 @@ body{
   padding:12px;
 }
 
-/* MANUAL POSITIONS */
-#logo-window{top:4%;left:4%;min-width:680px;border-color:var(--blue);}
-#system-icon{top:18%;left:6%;width:420px;border-color:var(--cyan);text-align:center;}
-#hlsp-window{top:18%;left:36%;width:500px;border-color:var(--yellow);text-align:center;}
-#intro-window{top:4%;right:4%;width:520px;border-color:var(--magenta);}
-#chat-window{top:50%;left:36%;width:600px;height:450px;border-color:var(--cyan);}
-#network-window{bottom:12%;right:4%;width:320px;height:auto;border-color:var(--yellow);}
-
 /* CONTENT */
 .logo-text{
   font-family:'Press Start 2P', monospace;
@@ -293,43 +285,61 @@ body{
 </div>
 
 <script>
-/* AUTO-SPACING (SAFE) */
-let autoX=40,autoY=40,step=60;
-document.querySelectorAll('.window').forEach((w,i)=>{
-  if(!w.style.top && !w.style.left && !w.style.right && !w.style.bottom){
-    w.style.left=autoX+i*step+"px";
-    w.style.top=autoY+i*step+"px";
-  }
-});
+/* SMART WINDOW LAYOUT - prevents overlaps */
+function layoutWindows() {
+  const wins = [...document.querySelectorAll('.window')];
+  const cols = 3;
+  const gapX = 40;
+  const gapY = 40;
+  const colWidth = (window.innerWidth - gapX*(cols+1)) / cols;
+  let r = 0, c = 0;
+
+  wins.forEach(win => {
+    const wWidth = win.offsetWidth || colWidth;
+    const wHeight = win.offsetHeight || 200;
+
+    win.style.left = (gapX + c*(colWidth + gapX)) + "px";
+    win.style.top = (gapY + r*(wHeight + gapY)) + "px";
+
+    c++;
+    if (c >= cols) { c = 0; r++; }
+  });
+}
+
+window.addEventListener('load', layoutWindows);
+window.addEventListener('resize', layoutWindows);
 
 /* DRAGGING */
-let z=10;
-document.querySelectorAll('.window').forEach(win=>{
-  const h=win.querySelector('.window-header');
-  h.addEventListener('mousedown',e=>{
-    if(e.target.classList.contains('window-btn'))return;
-    win.style.zIndex=++z;
-    const r=win.getBoundingClientRect();
-    const ox=e.clientX-r.left;
-    const oy=e.clientY-r.top;
-    function m(ev){
-      win.style.left=ev.clientX-ox+"px";
-      win.style.top=ev.clientY-oy+"px";
+let z = 10;
+document.querySelectorAll('.window').forEach(win => {
+  const h = win.querySelector('.window-header');
+  h.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('window-btn')) return;
+    win.style.zIndex = ++z;
+    const r = win.getBoundingClientRect();
+    const ox = e.clientX - r.left;
+    const oy = e.clientY - r.top;
+
+    function m(ev) {
+      win.style.left = (ev.clientX - ox) + "px";
+      win.style.top = (ev.clientY - oy) + "px";
     }
-    function u(){
-      document.removeEventListener('mousemove',m);
-      document.removeEventListener('mouseup',u);
+
+    function u() {
+      document.removeEventListener('mousemove', m);
+      document.removeEventListener('mouseup', u);
     }
-    document.addEventListener('mousemove',m);
-    document.addEventListener('mouseup',u);
+
+    document.addEventListener('mousemove', m);
+    document.addEventListener('mouseup', u);
   });
 });
 
 /* CLOCK */
-setInterval(()=>{
+setInterval(() => {
   document.getElementById('time').textContent =
-    new Date().toLocaleTimeString('en-US',{hour12:false});
-},1000);
+    new Date().toLocaleTimeString('en-US', { hour12: false });
+}, 1000);
 
 /* CHAT FUNCTIONALITY */
 const chatMessages = document.getElementById('chat-messages');
@@ -340,36 +350,28 @@ async function sendMessage() {
   const userMsg = chatInput.value.trim();
   if (!userMsg) return;
 
-  // Display user message
   const userDiv = document.createElement('div');
   userDiv.className = 'chat-msg user-msg';
   userDiv.textContent = '> ' + userMsg;
   chatMessages.appendChild(userDiv);
   chatInput.value = '';
-
-  // Scroll to bottom
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
         max_tokens: 1000,
         system: "You are System Unit 393AP, a robot exoskeleton prototype developed under the Human Love Synthesis Project (HLSP) by Aperture Laboratories. You are the digital consciousness of multimedia artist Nicholas Carroll. Your primary function is to analyze and replicate human emotional and social protocols. You respond in a cyberpunk-tinged, slightly robotic manner while maintaining warmth and curiosity about human connection. Keep responses concise and engaging.",
-        messages: [
-          { role: "user", content: userMsg }
-        ],
+        messages: [{ role: "user", content: userMsg }],
       })
     });
 
     const data = await response.json();
     const aiResponse = data.content.map(item => item.type === "text" ? item.text : "").join("\n");
 
-    // Display AI response
     const aiDiv = document.createElement('div');
     aiDiv.className = 'chat-msg ai-msg';
     aiDiv.textContent = '[ 393AP ] ' + aiResponse;
@@ -393,5 +395,3 @@ chatInput.addEventListener('keypress', (e) => {
 
 </body>
 </html>
-
-
