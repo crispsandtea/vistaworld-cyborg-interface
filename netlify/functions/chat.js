@@ -32,7 +32,8 @@ exports.handler = async (event, context) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`
+        'x-api-key': process.env.ANTHROPIC_API_KEY,  // CHANGED: from Authorization: Bearer
+        'anthropic-version': '2023-06-01'  // ADDED: required header
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
