@@ -396,9 +396,10 @@ async function sendMessage() {
     const data = await response.json();
 
     let aiResponse = "";
-    if (data?.completion?.output?.length > 0) {
-      aiResponse = data.completion.output
-        .map(item => item.type === "output_text" ? item.text : "")
+    if (data?.content?.length > 0) {
+      aiResponse = data.content
+        .map(item => item.type === "text" ? item.text : "")
+        .filter(Boolean)
         .join("\n");
     } else if (data?.error) {
       const errorMsg = typeof data.error === 'string' 
@@ -433,3 +434,4 @@ chatInput.addEventListener('keypress', (e) => {
 
 </body>
 </html>
+
