@@ -85,13 +85,17 @@ body{
   line-height:1.5;
 }
 
+#network-window .window-content{
+  padding:12px;
+}
+
 /* MANUAL POSITIONS */
 #logo-window{top:4%;left:4%;min-width:680px;border-color:var(--blue);}
 #system-icon{top:18%;left:6%;width:420px;border-color:var(--cyan);text-align:center;}
 #hlsp-window{top:18%;left:36%;width:500px;border-color:var(--yellow);text-align:center;}
 #intro-window{top:4%;right:4%;width:520px;border-color:var(--magenta);}
-#chat-window{top:50%;left:36%;width:600px;border-color:var(--cyan);}
-#network-window{bottom:12%;right:4%;width:300px;border-color:var(--yellow);}
+#chat-window{top:50%;left:36%;width:600px;height:450px;border-color:var(--cyan);}
+#network-window{bottom:12%;right:4%;width:320px;height:auto;border-color:var(--yellow);}
 
 /* CONTENT */
 .logo-text{
@@ -111,10 +115,17 @@ body{
 .network-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:12px;
+  gap:8px;
   text-align:center;
 }
-.network-grid a{color:var(--yellow);font-size:28px;text-decoration:none;}
+.network-grid a{
+  color:var(--yellow);
+  font-size:26px;
+  text-decoration:none;
+  transition:transform 0.2s;
+  display:block;
+}
+.network-grid a:hover{transform:scale(1.2);}
 
 /* TASKBAR */
 .taskbar{
@@ -261,7 +272,15 @@ body{
     </div>
   </div>
   <div class="window-content">
-    <div class="network-grid">🌐 🌐 🌐 🌐 🌐 🌐</div>
+    <div class="network-grid">
+      <a href="https://www.youtube.com/@vistaworld-q7y" target="_blank" title="YouTube">🌐</a>
+      <a href="https://x.com/vistaworld0077" target="_blank" title="Twitter">🌐</a>
+      <a href="https://www.instagram.com/vistaworld0077" target="_blank" title="Instagram">🌐</a>
+      <a href="https://facechain.bandcamp.com/" target="_blank" title="Bandcamp">🌐</a>
+      <a href="https://soundcloud.com/facechain" target="_blank" title="Soundcloud">🌐</a>
+      <a href="https://vistaworld.org/music" target="_blank" title="Music">🎵</a>
+      <a href="https://vistaworld.org/communicate" target="_blank" title="Communicate">📖</a>
+    </div>
   </div>
 </div>
 
