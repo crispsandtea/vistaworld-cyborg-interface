@@ -394,26 +394,18 @@ async function sendMessage() {
     });
 
     const data = await response.json();
-    console.log("Full response:", data); // Debug log
 
     let aiResponse = "";
-    
-    // Check for Anthropic API response format
-    if (data?.content?.length > 0) {
-      aiResponse = data.content
-        .filter(item => item.type === "text")
-        .map(item => item.text)
+    if (data?.completion?.output?.length > 0) {
+      aiResponse = data.completion.output
+        .map(item => item.type === "output_text" ? item.text : "")
         .join("\n");
-    } 
-    // Check for error
-    else if (data?.error) {
+    } else if (data?.error) {
       const errorMsg = typeof data.error === 'string' 
         ? data.error 
         : (data.error.message || JSON.stringify(data.error));
       aiResponse = "System error: " + errorMsg;
-    } 
-    // Fallback
-    else {
+    } else {
       console.log("Unexpected response:", data);
       aiResponse = "No response from 393AP (check console for details)";
     }
@@ -441,4 +433,3 @@ chatInput.addEventListener('keypress', (e) => {
 
 </body>
 </html>
-
