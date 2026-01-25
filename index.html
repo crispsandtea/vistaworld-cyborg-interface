@@ -401,7 +401,6 @@ async function sendMessage() {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
   try {
-    // Call your Netlify serverless function
     const response = await fetch("/.netlify/functions/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -410,21 +409,17 @@ async function sendMessage() {
 
     const data = await response.json();
 
-    // Properly extract AI text from Anthropic response
+    // FIX: Extract text from Anthropic response
     let aiResponse = "";
-    try {
-      if (data?.completion?.output && data.completion.output.length > 0) {
-        aiResponse = data.completion.output
-          .filter(item => item.type === "output_text")
-          .map(item => item.text)
-          .join("\n");
-      } else if (data?.error) {
-        aiResponse = "System error: " + data.error;
-      } else {
-        aiResponse = "No response from 393AP";
-      }
-    } catch (err) {
-      aiResponse = "System error: " + JSON.stringify(err);
+    if (data?.completion?.output?.length > 0) {
+      // The v1 API outputs an array of messages in completion.output
+      aiResponse = data.completion.output
+        .map(item => item.type === "output_text" ? item.text : "")
+        .join("\n");
+    } else if (data?.error) {
+      aiResponse = "System error: " + data.error;
+    } else {
+      aiResponse = "No response from 393AP";
     }
 
     const aiDiv = document.createElement('div');
@@ -451,6 +446,7 @@ chatInput.addEventListener('keypress', (e) => {
 
 </body>
 </html>
+
 
 
 
