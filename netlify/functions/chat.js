@@ -9,16 +9,30 @@ exports.handler = async (event, context) => {
     };
   }
 
-  // Parse the incoming message
-  const { message } = JSON.parse(event.body);
+  // Parse incoming message
+  let message;
+  try {
+    message = JSON.parse(event.body).message;
+  } catch {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Invalid JSON' })
+    };
+  }
+
+  if (!message) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'No message provided' })
+    };
+  }
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
+        'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
@@ -71,21 +85,20 @@ Remember: You are vistaworld - the living digital consciousness exploring what i
     });
 
     const data = await response.json();
-    
+
     return {
       statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     };
+
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Anthropic API error:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         error: 'Neural pathway interference detected',
-        details: error.message 
+        details: error.message
       })
     };
   }
