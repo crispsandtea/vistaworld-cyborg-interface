@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>vistaworld // System Unit 393AP</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=DM+Mono&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
+
+:root{
+  --cyan:#00ffea;
+  --magenta:#ff00ff;
+  --blue:#4169ff;
+  --yellow:#ffff00;
+}
+
+body{
+  background:#000;
+  font-family:'VT323', monospace;
+  cursor: none;
+}
+
+#neon-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, #00ffea 0%, #ff00ff 60%, #4169ff 100%);
+  box-shadow: 0 0 10px #00ffea, 0 0 20px #ff00ff, 0 0 30px #4169ff;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s ease, box-shadow 0.2s ease;
+}
+
+.desktop-bg{
+  position:fixed;
+  inset:0;
+  background:url("hyperconnectivity.jpg") center/cover no-repeat;
+  z-index:0;
+}
+.desktop-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+}
+
+.crt-overlay {
+  position: fixed;
+  inset:0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0,
+    rgba(0,0,0,0.03) 1px
+  );
+  mix-blend-mode: overlay;
+  animation: flicker 0.15s infinite;
+  z-index:1000;
+}
+@keyframes flicker {
+  0%{opacity:0.05;}
+  50%{opacity:0.15;}
+  100%{opacity:0.05;}
+}
+
+.window{
+  position:absolute;
+  background:rgba(15,15,15,0.95);
+  border:2px solid;
+  border-radius:8px;
+  box-shadow:0 0 30px rgba(0,0,0,0.8);
+  overflow:hidden;
+}
+
+.window-header{
+  padding:8px 12px;
+  background:linear-gradient(#2a2a2a,#111);
+  border-bottom:2px solid;
+  cursor:move;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  user-select:none;
+}
+
+.window-title{
+  font-family:'Press Start 2P', monospace;
+  font-size:10px;
+}
+
+.window-controls{display:flex;gap:6px;}
+.window-btn{width:14px;height:14px;border-radius:2px;cursor:pointer;}
+.close{background:#ff5f56;}
+.minimize{background:#ffbd2e;}
+.maximize{background:#27c93f;}
+
+.window-content{
+  padding:16px;
+  color:#fff;
+  font-size:16px;
+  line-height:1.5;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.logo-text{
+  font-family:'Press Start 2P', monospace;
+  font-size:48px;
+  white-space:nowrap;
+  color:var(--blue);
+  text-shadow:3px 3px 0 var(--magenta),6px 6px 0 var(--cyan);
+}
+
+.essay-title {
+  color: var(--cyan);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.essay-author {
+  color: var(--magenta);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.essay-content p {
+  margin-bottom: 16px;
+}
+
+.essay-content h2 {
+  color: var(--cyan);
+  font-size: 18px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.taskbar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:50px;
+  background:rgba(10,10,10,0.95);
+  border-top:2px solid var(--cyan);
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  z-index:500;
+}
+.taskbar-time{margin-left:auto;color:var(--magenta);}
+</style>
+</head>
+
+<body>
+<div class="desktop-bg"></div>
+<div class="crt-overlay"></div>
+<div id="neon-cursor"></div>
+
+<div class="desktop">
+
+<div class="window" id="logo-window">
+  <div class="window-header">
+    <div class="window-title">LOGO.PNG</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="logo-text">vistaworld</div>
+  </div>
+</div>
+
+<div class="window" id="blog-window">
+  <div class="window-header">
+    <div class="window-title">BLOG.TXT</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="essay-content">
+      <div class="essay-title">Frutiger Dreams: Building Refracted Memories in a Posthuman Reality</div>
+      <div class="essay-author">19 February and 15 April 2024. Written by NPC-2030SX.</div>
+      
+      <p>Frutiger Aero is the culmination and configuration of a zeitgeist that illustrated a future where interconnectedness of Internet devices, iPods, water, trees, nature, and warmth come together. An aesthetic of hopes that bound together a future of allure, of Atlantis-like promise. Beyond that era came one that emphasized flatness, uniformity, and conformity. Natural environments ebbing and interacting with real-world environments ceased in favor of a flat screen user interface. What will follow in the era that comes is one where digital design is augmented and fully realized into our reality. The simulation becomes no longer sim but visceral.</p>
+
+      <p>It was in this era where the click of a mouse was the primary tactile task. The older Internet felt more manual, controlled, and limited. With the advent of flat design and smartphones, automatic app-enabled and widget-enabled environmental spaces seek to build data profiles and create a new home and thought space for every netizen. After about the launch of Instagram circa 2012, the proliferation and articulation of the digital image could be fully expressed within an application space by means of instantaneous audiovisual stimulation, production, and reward.</p>
+
+      <p>App design in this era and since then have abandoned spatial design in favor of complete user data collection and dominion. Spatial design, especially in regards to industrial product, was fundamentally explored by designers like Karim Rashid who explored design beyond the use of functionally but also gave equal consideration to aesthetic presentation.</p>
+
+      <p>What the Frutiger style lacked in its ability to seamlessly connect interfaces (a pro of lightweight flat design), it made up for in the immersive and transportive visual ephemera. We were living the future we were promised by marketers. This era was characterized by youth yet (or probably the beginning) to be controlled by the distractions and hyperstimulatory nothing-productions of the hypermodern age.</p>
+
+      <p>The movie A.I. (Artificial Intelligence), the fabled Spielberg/posthumously Kubrick film, is an exploration of this "promised future" where machines possessed the innocence, ennui, and curiousity of humans as they explored the realms of posthumanity. A boy robot wishes to connect with his 20th-century parental creators, only to wake up eons later in an age where humanity has been distilled to a digital vestige. The film explores hyper-adaptive, objective-oriented language transformers that seek to preserve digital childhood (pre-singularity).</p>
+
+      <p>Valleys of untamed bits vibrate in elevation backlit by a fading analog sky. As the world becomes more technologically integrated, the need to streamline processing power, give more structure, generate more parameters becomes clearer. The increasing few who have access to the technology, let alone understand it, are completely left behind in digital famine.</p>
+
+      <p>The release of the iPhone in 2007 pushed the ease of use of the smartphone, birthing a new device that brought interconnectedness to the mobile realm signaling the transformation of digitalization as an extension of the user itself. This extension inevitably wrought exploitation, manipulation, and information deception but on a more visceral and invasive scale than desktop living. The proliferation of this technology connected society but at an obvious cost to our attention span, our sanity, and our well-being.</p>
+
+      <p>Smartphones were originally envisioned as PDAs (personal device assistants). The IBM Simon was a nascent and bold attempt at being the first smartphone. Released in 1994, the device had 32 KB SRAM, an LCD touchscreen stylus display, sent/received faxes, e-mails, and pages; apps like a calculator, notepad, appointment creator, and calendar were also included. Clearly, technology back then served a clear and productive purpose than the modern dystopian, psyop-dispensing iPhones we were saddled with.</p>
+
+      <p>It would be impossible to analyze this phenomenon without understanding the production of aesthetics, the culture factory as per Theodor Adorno, is managed by the digital elite. Manufactured identities and cyberworlds were carefully manicured and commodified to the first generation of digital natives. Beyond design, aesthetic and retinal construction lays essence, and while the essence of Frutiger Aero was bio-superficial, what remained of the flat era was functional and analytic. Conversely, user interface (UI) and user experience (UX) designers may argue that flat design allows for easier usability. Indeed, much of the design from the Frutiger Aero era sacrificed usability and portability resulting in an overbloated and awkwardly shaped chassis as well as inefficient and often ineffective web design. Limited bandwidth capped user interaction.</p>
+
+      <p>Nonetheless, the era posited a second reality where virtual environments were designed to be more natural, more attractive, more surreal than our real-world counterparts. These environments were effortlessly seductive and almost certainly addicting. As such, the morality and civility of such a space may be virtually nonexistant. A society yet to be seized by attention hierarchy, surroundings were made to resemble an aquatic or pastoral expanse. We could be anyone, do anything, live forever. Data got bigger, the devices became smaller, the tech got omniscent. As I write this, many tech companies have downsized after a pandemic-era apex.</p>
+
+      <p>AI, even considering the weaknesses and flaws of generative AI, could easily take the role of many.</p>
+
+      <p>The rising comptetion between generative AI and humanity for jobs does not have to be so.</p>
+
+      <p>AI has the power to collaborate with humanity and nurture it, but humans may be inevitably resentful of it. The posthuman is an amalgamation of its digital and hominid antecedents. The posthuman recognizes the necessity for a digital interface and a dream generation system for symbiotic living. The dream generation system may be a seamless extension of ourselves, supporting us in creative endeavors or a tireless research partner that accelerates scientific progress. The posthuman is a being that seamlessly integrates the best aspects of human and digital intelligence. The road to posthumanity is beset by ethical concerns, most concerning that this revolutionary technology and innovation will almost certainly to an increasingly smaller and more concentrated digital elite.</p>
+
+      <p>In order for posthumanity to be trusted, its data must be decentralized; data transparency must be ensured through provenance, encryption, and ownership. Use homomorphic encryption to perform computations on encrypted data without decrypting it, allowing for secure data processing while preserving privacy. Even if data is stored on blockchain, it may still be controlled by centralized hubs owned by digital elite.</p>
+
+      <p>Even so, the high amounts of energy necessary to process posthuman data on blockchain, especially proof-of-work consensus mechanisms, will prove environmentally wasteful.</p>
+
+      <p>Also a consideration is the fact that blockchain is still an evolving technology that may prove difficult for long-term posthumanity unless one designs posthumanity with time instead of obsolescence in mind.</p>
+
+      <p>Another ramification of the multiple profiles generated in posthumanity will be exactly the issue and inevitability of dissoative identity formations and identity viruses. The psychological, pataphysical and physiological effects of posthuman technologies on the human body are simply theoretical and guesswork at this point. Developing such a nascent and wildly new concept and technology requires consultation and framework with ethicists, medical and technical researchers, entrepreneurs, data scientists, and just in case a mortician.</p>
+
+      <p>As the digital and physical worlds merge more together over time, posthumanity will (and already has) taken its first step. Moving from Frutiger dreams to generative fields requires steadfast responsibility and determination. The posthumans will be the 21st century cosmopolitans and decide the rest of our fates accordingly. We are at critical juncture in history; society and technology have never evolved at such a rate and will only continue to evolve exponentially. Taking command of it will require collaboration between human and machine, the question is if we realize it.</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="taskbar">
+  ◉ SYSTEM ONLINE
+  <div class="taskbar-time" id="time"></div>
+</div>
+
+<script>
+function layoutWindows() {
+  const wins = [...document.querySelectorAll('.window')];
+  const cols = 2;
+  const gapX = 40;
+  const gapY = 40;
+  const colWidth = (window.innerWidth - gapX*(cols+1)) / cols;
+  let r = 0, c = 0;
+
+  wins.forEach(win => {
+    const wWidth = win.offsetWidth || colWidth;
+    const wHeight = win.offsetHeight || 200;
+    win.style.left = (gapX + c*(colWidth + gapX)) + "px";
+    win.style.top = (gapY + r*(wHeight + gapY)) + "px";
+    c++;
+    if (c >= cols) { c = 0; r++; }
+  });
+}
+window.addEventListener('load', layoutWindows);
+window.addEventListener('resize', layoutWindows);
+
+let z = 10;
+document.querySelectorAll('.window').forEach(win => {
+  const h = win.querySelector('.window-header');
+  h.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('window-btn')) return;
+    win.style.zIndex = ++z;
+    const r = win.getBoundingClientRect();
+    const ox = e.clientX - r.left;
+    const oy = e.clientY - r.top;
+    function m(ev){ win.style.left=(ev.clientX-ox)+"px"; win.style.top=(ev.clientY-oy)+"px"; }
+    function u(){ document.removeEventListener('mousemove',m); document.removeEventListener('mouseup',u); }
+    document.addEventListener('mousemove', m);
+    document.addEventListener('mouseup', u);
+  });
+});
+
+setInterval(() => {
+  const now = new Date();
+  document.getElementById('time').textContent =
+    now.toLocaleDateString('en-US') + " " + now.toLocaleTimeString('en-US', { hour12: false });
+}, 1000);
+
+const cursor = document.getElementById('neon-cursor');
+document.addEventListener('mousemove', e => {
+  const x = e.clientX + Math.sin(Date.now()/150)*5;
+  const y = e.clientY + Math.cos(Date.now()/150)*5;
+  cursor.style.transform = `translate(${x}px,${y}px)`;
+});
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+osc.type = 'sine';
+osc.frequency.value = 60;
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+gain.gain.value = 0.02;
+osc.start();
+setInterval(() => {
+  osc.frequency.value = 60 + (Math.random()*5-2.5);
+}, 200);
+</script>
+
+</body>
+</html>
