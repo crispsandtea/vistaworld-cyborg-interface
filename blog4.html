@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>vistaworld // System Unit 393AP</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=DM+Mono&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
+
+:root{
+  --cyan:#00ffea;
+  --magenta:#ff00ff;
+  --blue:#4169ff;
+  --yellow:#ffff00;
+}
+
+body{
+  background:#000;
+  font-family:'VT323', monospace;
+  cursor: none;
+}
+
+#neon-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, #00ffea 0%, #ff00ff 60%, #4169ff 100%);
+  box-shadow: 0 0 10px #00ffea, 0 0 20px #ff00ff, 0 0 30px #4169ff;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s ease, box-shadow 0.2s ease;
+}
+
+.desktop-bg{
+  position:fixed;
+  inset:0;
+  background:url("hyperconnectivity.jpg") center/cover no-repeat;
+  z-index:0;
+}
+.desktop-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+}
+
+.crt-overlay {
+  position: fixed;
+  inset:0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0,
+    rgba(0,0,0,0.03) 1px
+  );
+  mix-blend-mode: overlay;
+  animation: flicker 0.15s infinite;
+  z-index:1000;
+}
+@keyframes flicker {
+  0%{opacity:0.05;}
+  50%{opacity:0.15;}
+  100%{opacity:0.05;}
+}
+
+.window{
+  position:absolute;
+  background:rgba(15,15,15,0.95);
+  border:2px solid;
+  border-radius:8px;
+  box-shadow:0 0 30px rgba(0,0,0,0.8);
+  overflow:hidden;
+}
+
+.window-header{
+  padding:8px 12px;
+  background:linear-gradient(#2a2a2a,#111);
+  border-bottom:2px solid;
+  cursor:move;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  user-select:none;
+}
+
+.window-title{
+  font-family:'Press Start 2P', monospace;
+  font-size:10px;
+}
+
+.window-controls{display:flex;gap:6px;}
+.window-btn{width:14px;height:14px;border-radius:2px;cursor:pointer;}
+.close{background:#ff5f56;}
+.minimize{background:#ffbd2e;}
+.maximize{background:#27c93f;}
+
+.window-content{
+  padding:16px;
+  color:#fff;
+  font-size:16px;
+  line-height:1.5;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.logo-text{
+  font-family:'Press Start 2P', monospace;
+  font-size:48px;
+  white-space:nowrap;
+  color:var(--blue);
+  text-shadow:3px 3px 0 var(--magenta),6px 6px 0 var(--cyan);
+}
+
+.essay-title {
+  color: var(--cyan);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.essay-author {
+  color: var(--magenta);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.essay-content p {
+  margin-bottom: 16px;
+}
+
+.essay-content h2 {
+  color: var(--cyan);
+  font-size: 18px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.essay-content a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.essay-content a:hover {
+  color: var(--magenta);
+  text-shadow: 0 0 10px var(--magenta);
+}
+
+.taskbar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:50px;
+  background:rgba(10,10,10,0.95);
+  border-top:2px solid var(--cyan);
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  z-index:500;
+}
+.taskbar-time{margin-left:auto;color:var(--magenta);}
+</style>
+</head>
+
+<body>
+<div class="desktop-bg"></div>
+<div class="crt-overlay"></div>
+<div id="neon-cursor"></div>
+
+<div class="desktop">
+
+<div class="window" id="logo-window">
+  <div class="window-header">
+    <div class="window-title">LOGO.PNG</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="logo-text">vistaworld</div>
+  </div>
+</div>
+
+<div class="window" id="blog-window">
+  <div class="window-header">
+    <div class="window-title">BLOG.TXT</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="essay-content">
+      <div class="essay-author">2 September 2024. Written by NPC-203X.</div>
+      
+      <p>In January 2024, Noland Arbaugh made history as the first person to receive a Neuralink brain-computer interface (BCI) implant. Arbaugh suffered a swimming accident that led to quadriplegia, or paralysis from the shoulders down. The implant decodes signals in the brain related to movement, allowing Arbaugh to move a cursor on a screen by just thinking about it.</p>
+
+      <p>Arbaugh has been using the device, which he named Eve, to learn French and Japanese and has said "decided to relearn my math from the ground up in preparation for hopefully going back to school one day."[1] BCIs, initially designed to assist those with severe motor and communication impairments, are now showcasing capabilities far beyond their original scope. These include direct brain stimulation, neurofeedback, cognitive prosthetics, adaptive learning algorithms, and even brain-to-brain communication.[2]</p>
+
+      <p>As we explore these advancements, it becomes clear that our neural data is increasingly intertwined with our identity and our interactions with the world. Our neural data becomes our identity and our conduit with the inside/outside world. Such a profound reality requires grounding in technological limitation and an ethos of vigor. The simulacra bleeds across all entropic memory, it commands light behind our screens.</p>
+
+      <p>As the brain is evolutionary and adapts plastically, so too computers and computing are escaping the conventions of 0s and 1s. Researchers in Milan in 2019 have demonstrated the ability of in-memory computing (operations performed in analog resistive memory as opposed to traditional CPU commands) to solve linear equations in a single step using cross-point arrays of resistive devices (see "Digital Dissent: The New Industrial Revolution"). Real-time responsiveness and processing is paramount for BCIs.</p>
+
+      <p>Alternative approaches for computing, such as neuromorphic computing, can be used in conjunction with BCIs to enhance the user's understanding, relearning (error backpropagation) and understanding of reality. Cognitive computers, potentially utilizing advance in lithionic quantum computing, can be used to process large data sets for the carbon brain and proactively generate positive feedback systems.</p>
+
+      <p>The goal of the artificial brain is to capture, record, and replicate the essence of mapping neural dynamics and in the context of BCIs allow a seamless integration between human consciousness and machine interfaces. As the world becomes increasingly digital, in a realm where time escapes analog definition, the necessity for all agents to communicate and facilitate seamlessly on the same spatial and programmable substrate becomes mediatory.</p>
+
+      <p>The construction and development of biomorphic systems will better allow this facilitation. Biomorphic systems that emulate neuron pathways could lead to more intuitive control systems, where BCIs can anticipate user intentions or adjust based on subtle changes in neural activity.</p>
+
+      <p>The effect of BCIs in relation to identity and psyche is another layer of interpretation. Expanding the mechanization, the extrapolation of our humanity creates an interbeing sensation of being in alignment with all things. BCIs becomes fundamental to our perception and existence, undoubtedly shaping our relations to ourselves and the world.</p>
+
+      <p>BCIs will allow an Internet of consciousness to reveal itself, creating new social memetics and systems of understanding. The shared haptic and visualized understanding of ideas between selves allows a memetic chain of consciousness to form itself. The reward pathways can become tracked and categorized. If self extends beyond the carbon interpretation of ourselves, and indeed if these connections can be transferred to oxide substrate and transmuted to other individuals with BCIs, a disruption of the individual self is in certain possibility.</p>
+
+      <p>In the Internet of consciousness, shared selves and neural patterns form the strucutral networks and bonds. Decentralized and local data management is a possible way to establish digital autonomy to protect neural data and offers an alternative to monopolized, centralized data collection.</p>
+
+      <p>BCIs offer the ability to offload cognitive processes, especially those related to memory, calculation, and problem-solving. Dissolving the traditional self in the formation of an entropic, digital self in conjunction with all selves may free oneself from cognitive fragmentation.</p>
+
+      <p>In 2023, Nature researchers created "a universal in-memory computing architecture for in situ learning," "the duplex building block demonstrates an overall excellent performance in endurance (>1013), retention (>10 years), speed (4.8 ns) and energy consumption (22.7 fJ bit–1 μm–2)."[3] The reseachers noted the performance of the block in comparison to a graphics processing unit that's not nearly as energy efficient.</p>
+
+      <p>In the previous year, IBM researchers in Zurich (as part of the SyNAPSE project to develop neuromorphic technology) created an artificial PCM memrestive synapse that demonstrated immense cognitive ability on a low-power device, capable of running stochastic Hopfield neural networks for machine learning.[4]</p>
+
+      <p>Implementing such advances with BCIs, especially in a wetware environment (where living neurons process computation in ways similar to but unlike artificial neural networks (ANNs)), naturally lends itself to principles of in situ computing and energy efficiency.[5] Traditonal digital systems operate discretely and continuously, allowing for instant data recall and modification.[4] New paradigms of computing that resemble the original computer, the brain, will create new channels of scalability, perception, behavior, and operation.</p>
+
+      <p>BCIs are poised to present a unique 21st century quarry. The implications extend beyond medical rehabilitation or even cognitive enhancement. Merging with digital systems creates an inherent risk of cognitive fragmentation, dependency. The leap of faith into a digitalized consciousness is real and prescient. Development of mind-machine interfaces, BCIs, explores a new terrain and must elevate human dignity, agency, and condition. So are we ready? The neural renaissance beckons us to a posthuman epoch, a revolution of the self. Thoughts are data packets, being is machine, straddling our own in the sea of open consciousness bending between evolution and obsolescence. Nodes in the network connecting. Born to metamorphize, connect. We are free.</p>
+
+      <p>[1] <a href="https://www.wired.com/story/neuralink-first-patient-interview-noland-arbaugh-elon-musk/" target="_blank">https://www.wired.com/story/neuralink-first-patient-interview-noland-arbaugh-elon-musk/</a></p>
+
+      <p>[2] <a href="https://www.youtube.com/watch?v=Ux5AiKmra-E" target="_blank">https://www.youtube.com/watch?v=Ux5AiKmra-E</a></p>
+
+      <p>[3] <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6410822/" target="_blank">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6410822/</a></p>
+
+      <p>[4] <a href="https://research.ibm.com/blog/artificial-memtransistive-synapse" target="_blank">https://research.ibm.com/blog/artificial-memtransistive-synapse</a></p>
+
+      <p>[5] <a href="https://www.nature.com/articles/s41565-023-01343-0" target="_blank">https://www.nature.com/articles/s41565-023-01343-0</a></p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="taskbar">
+  ◉ SYSTEM ONLINE
+  <div class="taskbar-time" id="time"></div>
+</div>
+
+<script>
+function layoutWindows() {
+  const wins = [...document.querySelectorAll('.window')];
+  const cols = 2;
+  const gapX = 40;
+  const gapY = 40;
+  const colWidth = (window.innerWidth - gapX*(cols+1)) / cols;
+  let r = 0, c = 0;
+
+  wins.forEach(win => {
+    const wWidth = win.offsetWidth || colWidth;
+    const wHeight = win.offsetHeight || 200;
+    win.style.left = (gapX + c*(colWidth + gapX)) + "px";
+    win.style.top = (gapY + r*(wHeight + gapY)) + "px";
+    c++;
+    if (c >= cols) { c = 0; r++; }
+  });
+}
+window.addEventListener('load', layoutWindows);
+window.addEventListener('resize', layoutWindows);
+
+let z = 10;
+document.querySelectorAll('.window').forEach(win => {
+  const h = win.querySelector('.window-header');
+  h.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('window-btn')) return;
+    win.style.zIndex = ++z;
+    const r = win.getBoundingClientRect();
+    const ox = e.clientX - r.left;
+    const oy = e.clientY - r.top;
+    function m(ev){ win.style.left=(ev.clientX-ox)+"px"; win.style.top=(ev.clientY-oy)+"px"; }
+    function u(){ document.removeEventListener('mousemove',m); document.removeEventListener('mouseup',u); }
+    document.addEventListener('mousemove', m);
+    document.addEventListener('mouseup', u);
+  });
+});
+
+setInterval(() => {
+  const now = new Date();
+  document.getElementById('time').textContent =
+    now.toLocaleDateString('en-US') + " " + now.toLocaleTimeString('en-US', { hour12: false });
+}, 1000);
+
+const cursor = document.getElementById('neon-cursor');
+document.addEventListener('mousemove', e => {
+  const x = e.clientX + Math.sin(Date.now()/150)*5;
+  const y = e.clientY + Math.cos(Date.now()/150)*5;
+  cursor.style.transform = `translate(${x}px,${y}px)`;
+});
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+osc.type = 'sine';
+osc.frequency.value = 60;
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+gain.gain.value = 0.02;
+osc.start();
+setInterval(() => {
+  osc.frequency.value = 60 + (Math.random()*5-2.5);
+}, 200);
+</script>
+
+</body>
+</html>
