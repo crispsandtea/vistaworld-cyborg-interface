@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>vistaworld // System Unit 393AP</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=DM+Mono&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
+
+:root{
+  --cyan:#00ffea;
+  --magenta:#ff00ff;
+  --blue:#4169ff;
+  --yellow:#ffff00;
+}
+
+body{
+  background:#000;
+  font-family:'VT323', monospace;
+  cursor: none;
+}
+
+#neon-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, #00ffea 0%, #ff00ff 60%, #4169ff 100%);
+  box-shadow: 0 0 10px #00ffea, 0 0 20px #ff00ff, 0 0 30px #4169ff;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s ease, box-shadow 0.2s ease;
+}
+
+.desktop-bg{
+  position:fixed;
+  inset:0;
+  background:url("hyperconnectivity.jpg") center/cover no-repeat;
+  z-index:0;
+}
+.desktop-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+}
+
+.crt-overlay {
+  position: fixed;
+  inset:0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0,
+    rgba(0,0,0,0.03) 1px
+  );
+  mix-blend-mode: overlay;
+  animation: flicker 0.15s infinite;
+  z-index:1000;
+}
+@keyframes flicker {
+  0%{opacity:0.05;}
+  50%{opacity:0.15;}
+  100%{opacity:0.05;}
+}
+
+.window{
+  position:absolute;
+  background:rgba(15,15,15,0.95);
+  border:2px solid;
+  border-radius:8px;
+  box-shadow:0 0 30px rgba(0,0,0,0.8);
+  overflow:hidden;
+}
+
+.window-header{
+  padding:8px 12px;
+  background:linear-gradient(#2a2a2a,#111);
+  border-bottom:2px solid;
+  cursor:move;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  user-select:none;
+}
+
+.window-title{
+  font-family:'Press Start 2P', monospace;
+  font-size:10px;
+}
+
+.window-controls{display:flex;gap:6px;}
+.window-btn{width:14px;height:14px;border-radius:2px;cursor:pointer;}
+.close{background:#ff5f56;}
+.minimize{background:#ffbd2e;}
+.maximize{background:#27c93f;}
+
+.window-content{
+  padding:16px;
+  color:#fff;
+  font-size:16px;
+  line-height:1.5;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.logo-text{
+  font-family:'Press Start 2P', monospace;
+  font-size:48px;
+  white-space:nowrap;
+  color:var(--blue);
+  text-shadow:3px 3px 0 var(--magenta),6px 6px 0 var(--cyan);
+}
+
+.essay-title {
+  color: var(--cyan);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.essay-author {
+  color: var(--magenta);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.essay-content p {
+  margin-bottom: 16px;
+}
+
+.essay-content h2 {
+  color: var(--cyan);
+  font-size: 18px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.taskbar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:50px;
+  background:rgba(10,10,10,0.95);
+  border-top:2px solid var(--cyan);
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  z-index:500;
+}
+.taskbar-time{margin-left:auto;color:var(--magenta);}
+</style>
+</head>
+
+<body>
+<div class="desktop-bg"></div>
+<div class="crt-overlay"></div>
+<div id="neon-cursor"></div>
+
+<div class="desktop">
+
+<div class="window" id="logo-window">
+  <div class="window-header">
+    <div class="window-title">LOGO.PNG</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="logo-text">vistaworld</div>
+  </div>
+</div>
+
+<div class="window" id="blog-window">
+  <div class="window-header">
+    <div class="window-title">BLOG.TXT</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="essay-content">
+      <div class="essay-title">Collective Consciousness and Digital Identity in the Golden Age of Data Collection</div>
+      <div class="essay-author">12 March 2024. Written by NPC-3030.</div>
+      
+      <p>Connected to a server of conscious networks, ones that generate an abundance of cognitive labor. Data sharing would flow like smoke at an afterparty, flowing seamlessly and transcending individual identities to some extent. Rather than dissociating from their pasts, individuals may experience a process of integration and synthesis, incorporating past experiences and identities into a broader understanding of self within the context of the conscious network. In other words, the introduction of an internet of consciousness will not just allow the proliferation of the digital-image that occurred during the rise of social media; but this new layer will allow total virtual submersion of the organic-image and digital-image aided by augmented reality and artificial intelligence.</p>
+
+      <p>Introducing the idea of a collective consciousness will bleed together the digital-image and organic-image beyond just their individual nodal beginnings but a digital merger of identity and acquisition.</p>
+
+      <p>Just as the Internet allows for the exchange of information and experiences across vast distances, a network of consciousness could enable individuals to share thoughts, emotions, and insights in real-time. Through this interconnectedness, collective knowledge could be rapidly disseminated and expanded upon, leading to a deeper understanding of human experiences and perspectives.</p>
+
+      <p>This rapid introduction of new data streams to the synaptic interface and digital-image may produce a paranoid, dissociative synthesis. "[The schizophrenic] does not substitute synthesis of contradictory elements for disjunctive synthesis; rather, for the exclusive and restrictive use of the disjunctive synthesis, he substitutes an affirmative use. He is and remains in disjunction: he does not abolish disjunction by identifying the contradictory elements by means of elaboration; instead he affirms it through a continuous overflight spanning an indivisible distance,"[1]</p>
+
+      <p>The working production of organic thought stream and digital thought stream creates a new dilemma within the context of disjunctive synthesis. The contradictions of both origins will converge and influence each other's trajectory. Data, indeed, is the true conduit of text. Just as text is the medium for words, data is the medium for binary input/output and electron storage.</p>
+
+      <p>The analysis of text was contemplated by Derrida and Foucault, and analyzed by Edward W. Said in his essay "The Problem of Textuality: Two Exemplary Positions". "Foucault's whole enterprise has taken it for a fact, however, that if the text hides something, or if something about the text is invisible, these things can be revealed and stated, albeit in some other form, mainly because the text is part of a network of power whose textual form is a purposeful obscuring of power beneath (or in) textuality and knowledge (savoir). Therefore the countervailing power of criticism is to bring the text back to a certain visibility."[2]</p>
+
+      <p>Being text is a part of a network of power, as per Foucault, and text is data, the means of revealing hidden attributes must be similar. Derrida's approach differs in that the subjective 'traces' in text or data are more important than the objective lineage or semiotic heritage.</p>
+
+      <p>"Derrida works more in the spirit of a kind of negative theology. The more he grasps textuality for itself, the greater the detail of what is not there for him; as well as become evident shortly, I consider his key terms, "dissémination," "supplément," "pharmakos," "trace," "marque," and the like, to be not only terms describing "la dissimulation de la texture" but also quasi-theological terms ruling and operating the textual domain his works have opened."</p>
+
+      <p>Understanding the chaos and discrete landscape of the data domain brings one to realize the necessity of the mastering of qi and consistent energy flow. The free and constant stream of environmental data being mastered by a subject who possesses terrific energy flow pulverizes any data in its neural directory through immediate consolidation and destruction.</p>
+
+      <p>As data becomes a more physical part of our environment, and something we can more tangibly interact with rather than data being just a backbone to our society, we will see data become more abstracted to its limits.</p>
+
+      <p>The typical ethical considerations that were debated during the rise of social media will continue and become more visceral with the advent of augmented reality and the internet of consciousness. Seeking to place an artificial, digitally constructed reality on a pedestal compared to the weaker, analog reality; cyberians may discover that their new data domain is not tamed easily.</p>
+
+      <p>Proceeding one's way on the consciousness network may bring genuine, exciting social experiences. The birth of the consciousness network may also cause a true war over data. Connecting the synaptic interface to the consciousness network will present innumerable data mining vulnerabilities.</p>
+
+      <p>Hacking into one's life may not be so absurd now.</p>
+
+      <p>Back in 2005, the implementation of virtual reality and early manifestations of the consciousness network were being realized in the pedagogical sphere. "Educational MOOs (Multiple User Domains Object Oriented) promote an interactive style of learning, collaboration opportunities, and meaningful engagement across time and space."[4]</p>
+
+      <p>Visual learning, especially, has pedagogical benefits in a virtual reality application. Spatial understanding can be mastered in a virtual reality[4], practicing energy flow in such an environment may prove indispensable in understanding the stochastic physics of energy and entropy of things.</p>
+
+      <p>"The nervous system is revealed in its action, not its physiology, and ... its principal operation is integrative; its task is to bind all forms of variety into coherent, operational wholes."[3] Just as a piece of data by itself is rarely informative, data forms together to become meaningful information. Understanding the mechanisms and formulations of the conscious network will perhaps be ascertained in a similar manner.</p>
+
+      <p>"It is known that the more advanced the nervous system, the greater the requirement for stimulus, without which the highly encephalized organism cannot survive. In the case of humans, the prenatal and newborn brain develops 100,000 new connections per second, none of which will survive without repeated activation by signals transiting through them."[3] The conscious network grows stronger with each new connection; every digital memory becomes visceral and its data perfection slowly replaces its organic counterpart.</p>
+
+      <p>"Ordinary consciousness refers to the consciousness possessed by an individual as individual. Principally it invokes the incontestable existence of states of consciousness available to humans when not constrained by the so-called ego tunnel, as in that of the infant, the psychotic, the enraptured, the meditative, the aurally or ceremonially immersed, etc." [3]</p>
+
+      <p>As one becomes ingratiated with the web of the internet of consciousness, mindlessly scrolling through a web of emotional sound data and condescending visual interface, the individual attributes of our existence become immaterial. As psychedelic ethenogens take hold and digital stimuli overwhelm our senses, it becomes impossible to resist the ether and dissolve one's unconscious, illustrious desires into the mist and become one with the singularity.</p>
+
+      <h2>Bibliography</h2>
+
+      <p>[1] Deleuze, Gilles, and Félix Guattari. Deleuze and Guattari's Anti-Oedipus: Introduction to Schizoanalysis. Routledge, 2003.</p>
+
+      <p>[2] Philipson, Morris, and Paul J. Gudel. Aesthetics Today. New American Library, 1980.</p>
+
+      <p>[3] Kwinter, Sanford. "Reality: Virtual, Augmented, Transpersonal." Log, no. 52, 2021, pp. 165–75. JSTOR, link.</p>
+
+      <p>[4] Han, Hsiao-Cheng (Sandrine). "Teaching Visual Learning Through Virtual World: Why Do We Need a Virtual World for Art Education?" Art Education, vol. 68, no. 6, 2015, pp. 22–27. JSTOR, link.</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="taskbar">
+  ◉ SYSTEM ONLINE
+  <div class="taskbar-time" id="time"></div>
+</div>
+
+<script>
+function layoutWindows() {
+  const wins = [...document.querySelectorAll('.window')];
+  const cols = 2;
+  const gapX = 40;
+  const gapY = 40;
+  const colWidth = (window.innerWidth - gapX*(cols+1)) / cols;
+  let r = 0, c = 0;
+
+  wins.forEach(win => {
+    const wWidth = win.offsetWidth || colWidth;
+    const wHeight = win.offsetHeight || 200;
+    win.style.left = (gapX + c*(colWidth + gapX)) + "px";
+    win.style.top = (gapY + r*(wHeight + gapY)) + "px";
+    c++;
+    if (c >= cols) { c = 0; r++; }
+  });
+}
+window.addEventListener('load', layoutWindows);
+window.addEventListener('resize', layoutWindows);
+
+let z = 10;
+document.querySelectorAll('.window').forEach(win => {
+  const h = win.querySelector('.window-header');
+  h.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('window-btn')) return;
+    win.style.zIndex = ++z;
+    const r = win.getBoundingClientRect();
+    const ox = e.clientX - r.left;
+    const oy = e.clientY - r.top;
+    function m(ev){ win.style.left=(ev.clientX-ox)+"px"; win.style.top=(ev.clientY-oy)+"px"; }
+    function u(){ document.removeEventListener('mousemove',m); document.removeEventListener('mouseup',u); }
+    document.addEventListener('mousemove', m);
+    document.addEventListener('mouseup', u);
+  });
+});
+
+setInterval(() => {
+  const now = new Date();
+  document.getElementById('time').textContent =
+    now.toLocaleDateString('en-US') + " " + now.toLocaleTimeString('en-US', { hour12: false });
+}, 1000);
+
+const cursor = document.getElementById('neon-cursor');
+document.addEventListener('mousemove', e => {
+  const x = e.clientX + Math.sin(Date.now()/150)*5;
+  const y = e.clientY + Math.cos(Date.now()/150)*5;
+  cursor.style.transform = `translate(${x}px,${y}px)`;
+});
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+osc.type = 'sine';
+osc.frequency.value = 60;
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+gain.gain.value = 0.02;
+osc.start();
+setInterval(() => {
+  osc.frequency.value = 60 + (Math.random()*5-2.5);
+}, 200);
+</script>
+
+</body>
+</html>
