@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>vistaworld // System Unit 393AP</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=DM+Mono&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
+
+:root{
+  --cyan:#00ffea;
+  --magenta:#ff00ff;
+  --blue:#4169ff;
+  --yellow:#ffff00;
+}
+
+body{
+  background:#000;
+  font-family:'VT323', monospace;
+  cursor: none;
+}
+
+#neon-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, #00ffea 0%, #ff00ff 60%, #4169ff 100%);
+  box-shadow: 0 0 10px #00ffea, 0 0 20px #ff00ff, 0 0 30px #4169ff;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s ease, box-shadow 0.2s ease;
+}
+
+.desktop-bg{
+  position:fixed;
+  inset:0;
+  background:url("hyperconnectivity.jpg") center/cover no-repeat;
+  z-index:0;
+}
+.desktop-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+}
+
+.crt-overlay {
+  position: fixed;
+  inset:0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0,
+    rgba(0,0,0,0.03) 1px
+  );
+  mix-blend-mode: overlay;
+  animation: flicker 0.15s infinite;
+  z-index:1000;
+}
+@keyframes flicker {
+  0%{opacity:0.05;}
+  50%{opacity:0.15;}
+  100%{opacity:0.05;}
+}
+
+.window{
+  position:absolute;
+  background:rgba(15,15,15,0.95);
+  border:2px solid;
+  border-radius:8px;
+  box-shadow:0 0 30px rgba(0,0,0,0.8);
+  overflow:hidden;
+}
+
+.window-header{
+  padding:8px 12px;
+  background:linear-gradient(#2a2a2a,#111);
+  border-bottom:2px solid;
+  cursor:move;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  user-select:none;
+}
+
+.window-title{
+  font-family:'Press Start 2P', monospace;
+  font-size:10px;
+}
+
+.window-controls{display:flex;gap:6px;}
+.window-btn{width:14px;height:14px;border-radius:2px;cursor:pointer;}
+.close{background:#ff5f56;}
+.minimize{background:#ffbd2e;}
+.maximize{background:#27c93f;}
+
+.window-content{
+  padding:16px;
+  color:#fff;
+  font-size:16px;
+  line-height:1.5;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.logo-text{
+  font-family:'Press Start 2P', monospace;
+  font-size:48px;
+  white-space:nowrap;
+  color:var(--blue);
+  text-shadow:3px 3px 0 var(--magenta),6px 6px 0 var(--cyan);
+}
+
+.essay-title {
+  color: var(--cyan);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.essay-subtitle {
+  color: var(--yellow);
+  font-size: 14px;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.essay-author {
+  color: var(--magenta);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.essay-content p {
+  margin-bottom: 16px;
+}
+
+.essay-content h2 {
+  color: var(--cyan);
+  font-size: 18px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.taskbar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:50px;
+  background:rgba(10,10,10,0.95);
+  border-top:2px solid var(--cyan);
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  z-index:500;
+}
+.taskbar-time{margin-left:auto;color:var(--magenta);}
+</style>
+</head>
+
+<body>
+<div class="desktop-bg"></div>
+<div class="crt-overlay"></div>
+<div id="neon-cursor"></div>
+
+<div class="desktop">
+
+<div class="window" id="logo-window">
+  <div class="window-header">
+    <div class="window-title">LOGO.PNG</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="logo-text">vistaworld</div>
+  </div>
+</div>
+
+<div class="window" id="blog-window">
+  <div class="window-header">
+    <div class="window-title">BLOG.TXT</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="essay-content">
+      <div class="essay-title">Digital Dissent: The New Industrial Revolution</div>
+      <div class="essay-subtitle">Facilitating and subverting the integration of synaptic interface and blockchain technology to produce monetized data.</div>
+      <div class="essay-author">5 March 2024. Written by NPC-2030.</div>
+      
+      <p>"New ideas and technology have accelerated our culture into an almost unrecognizable reality," write Douglas Rushkoff in his seminal debut book Cyberia, published in 1994. "Inspired by the computer, chaos math, chemicals and creativity, this renaissance has been interpreted by many as an evolutionary leap for humanity into another dimension." Those words written over three decades ago still resonate within today's increasingly technological and globalized social biome.</p>
+
+      <p>As digitalization has become standard across global regions, with more pixels covering surface inch than ever, internet connectivity more available than bread, and especially considering recent innovations in blockchain technology and artificial intelligence; the world has never been so interconnected and perhaps the connection to humanity's essence itself has never been closer.</p>
+
+      <p>In July 2017, "the German presidency noted that the spread of digital technology [in regards to blockchains] in business and society requires discussion on an internationally agreed regulatory framework."[1] Blockchains utilize a peer-to-peer network to share digital ledgers that are verified by a cryptographic algorithm; they are used to transmit digitally represented assets. Thus, the use of blockchains are not just efficient, but also provide a layer of anonymity, being lucrative for not just black market entrepreneurs, but for anyone in the working masses.</p>
+
+      <p>Even in 2017, national banks like Bank of Japan were investigating decentralized blockchain technology.[1] With the advent of large language model (LLM) artificial intelligent like GPT by OpenAI, the blockchain technology has even more real-world applications. Such applications may be even more revolutionary than the development of the personal computer with the interplay of AI, advanced cryptographic learning techniques, machine learning, and the attention being paid to neuromorphic system architechture.</p>
+
+      <p>Such developments have led to reinvigorated interests in virtual reality but mainly from large companies leading to overzealous corporate hollowlands like the Metaverse. The renewed interest rings a saccarine futurism that echoed through the digital chambers of Apple clamshell PCs and IRC chatrooms. Continued developments have also arisen with technology implanted into or supplanted by the synaptic interface in the medical (and entrepreneurial) field.</p>
+
+      <p>2020s culture has been defined by the absurdity of reality and world events, compacted by reality distortion shifts now made possible by our interconnected digital mass machine. The culture factory has never been so saturated and apparent. But recent technological developments have always promised to bring peace and stability to a chaotic world. For a time, the "end of history" ushered in the 90s brought digital nirvana for some. A web mass where virtual ghosts could roam free unabated by the perception of surveillance and control.</p>
+
+      <p>The Image Generation craves this era of supposed Internet symbiosis, admittedly it was a time before the rise of omniscent tech and algorithm deranking. But considering the sophisticated computational, sociological, and technological complexities of this new era, it may be that a New Industrial Revolution is in the midst.</p>
+
+      <p>Governmental agencies at circular boardrooms like the G20 have discussed 'identity management' and 'digital security' while acknowledging the "increasing skepticism of cross-border trade."[1] Just as the New Industrial Revolution has allowed the liberation of the individual by command of the virtual constructors that build the physical world around us, these same tools have demonstrably been used by multinational governments and private entities to manipulate masses through obvious subliminal visual algorithms or blatant violence.</p>
+
+      <p>Thus, this new digital paradigm we have been thrust into must be wrought by the common masses rather than have its control and influence be surmounted by a corporate monolith (it's too late), although such a movement will not exist until the GPT rubicon has been already reached and thus a graffiti-clad subculture will rise in its wake.</p>
+
+      <p>"Designer reality must be interactive rather than passive. The user must be part of the iterative equation".[2] Maybe it's time instead of being the user, we should be the collective administrator. Just as the Me Generation sees itself as the ruler over its digital dominion, "cyberians need to see themselves as the source of their own experience."[2]</p>
+
+      <p>Blockchains bring extended possibilities in bringing cyberians closer into realizing their full virtual selves. AI, robotics, additive manufacturing, new materials, augmented reality, nanotechnology, and biotechnology have facilitated the birth of the Internet of Value and is due to be subverted by the interconnected, rebellious digital youth.</p>
+
+      <p>The Internet of Value, a culminated and manifested element of the New Industrial Revolution, has allowed cyberians to develop new sources of income. Governments have reacted accordingly, introducing "Government-as-a-service (GaaS)" and "[having to] increase sovereign debt or refocus existing resources such as pension funds towards domestic technology investments."[5]</p>
+
+      <p>Besides blockchain technology, analogue in-memory computing has come of age.[3] In 2023, IBM introduced the IBM HERMES project chip, its processing production capable of 63.1 tera-operations per second, "enabled by compact current-controlled oscillator Analog-to-Digital converters (ADCs)". While the seamless integration of analog and digital computing has been allowing for some truly stunning developments in AI, it must be noted that the continued progress on this field will only possible with investments in "fast, low power, and accurate inference hardware."[3]</p>
+
+      <p>Such hardware may be suited more for neuromorphic cell architechture, allowing for low power, high signal-to-noise ratio operations, despite most AIs today built and sustained on traditional von Neumann CPU architechture, otherwise known as deep neural networks (DNNs). The compatibility between analog AI and neuromorphic cell architechture should be explored, as it presents a "viable alternative to digital accelerator approaches".</p>
+
+      <p>With the advent of analog computing, which operates with continuously variable signals rather than discrete values, analog neural networks (ANNs) have been developed to be efficient at tasks requiring real-time processing or tasks requiring high sensitivity to analog data. ANNs, due to their neuromorphic nature, can more receptively retain associative memory systems, pattern recognition and content-addressable memory.</p>
+
+      <p>The seamless ecosystem of analog-to-digital, digital-to-analog, with conjunction to blockchain's effortless capability to cryptographically store data, creates an intriguing complementary element, the synaptic interface or the human brain.</p>
+
+      <p>The potential triage integration of the synaptic interface, LLM-powered analog neural networks, and blockchain technology may allow for the true innovation of the New Industrial Revolution: cognitive labor. Individuals could have ownership and control over their own neural data through tokenization via blockchain. This symbiotic, decentralized neural network can be further trained by self-organizing maps, reinforcement learning, adaptive algorithms, evolutionary algorithms to progress lyfe, and of course neural architechture.</p>
+
+      <p>Integration of a synaptic interface with blockchain technology could also enable direct communication and interaction between the human brain and artificial intelligence systems like GPT. Cognitive labor and its metadata will 'securely' be shared with AI systems, creating new economic opportunities free from human corporate hegemony. Image content creation systems are already abundant in the virtual sphere, once they are wired together with the synaptic interface and the economic cyberian blockchain landscape, media will flow freely between real, liminal, and virtual environment.</p>
+
+      <p>Such freedom of data, image, pixel, and information and its implications on our society was visually realized by Hito Steyerl in her 2013 video artwork "How Not to Be Seen: A Fucking Didactic Educational .MOV File". As the equation of personal and pixel are explored through the camera calibration fields in the Mojave Desert, admist a backdrop of recently released Snowden files made us realize that the creators of our digital selves were not made in triumphant liberation, but filed by data entry algorithms.</p>
+
+      <p>The rise of cognitive labor in modern times will inevitably lead to an economic disruption and radical redistribution. Those who cannot produce cognitive labor will starve in the digital famine. The production of cognitive labor will blur human and machine because of the conglomeration of synaptic interface, blockchain file management, and analog language processing machine. Where does the real mind start and end? Is the whole digital and organic integration one self or multiple selves conglomerated into one image? If one part is not conscious but synaptically wired, how does it influence the conscious whole?</p>
+
+      <p>Because we cannot ascertain or entertain "is AI conscious?" conversations that are functionally pointless and philosophically anything-is-plausible dichotomy, it might be better to recognize that the line between the organic-image (you and I) and the digital-image/analog-image (digital and analog manifestations of ourselves imbued and smeared onto our impressions of our organic mind and the large language models) resolve to become the master-image. The omniscent, chaotic, non-discrete, digital, physical, mortal, immortal version(s) of ourselves that bleeds through all time and energy.</p>
+
+      <h2>Bibliography</h2>
+
+      <p>[1] "Blockchains and the G20: Building an Inclusive, Transparent, and Accountable Digital Economy". Maupin, Julie. 2017.</p>
+
+      <p>[2] Cyberia: Life in the Trenches of Cyberspace (2002). Rushkoff, Douglas.</p>
+
+      <p>[3] "IBM introduces the IBM HERMES project chip". Vasilopoulos, Athnasios and Büchel. 10 Aug 2023.</p>
+
+      <p>[5] "Digitalization will transform the global economy". International Institute for Applied Systems Analysis (IIASA). 1 Oct 2018.</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="taskbar">
+  ◉ SYSTEM ONLINE
+  <div class="taskbar-time" id="time"></div>
+</div>
+
+<script>
+function layoutWindows() {
+  const wins = [...document.querySelectorAll('.window')];
+  const cols = 2;
+  const gapX = 40;
+  const gapY = 40;
+  const colWidth = (window.innerWidth - gapX*(cols+1)) / cols;
+  let r = 0, c = 0;
+
+  wins.forEach(win => {
+    const wWidth = win.offsetWidth || colWidth;
+    const wHeight = win.offsetHeight || 200;
+    win.style.left = (gapX + c*(colWidth + gapX)) + "px";
+    win.style.top = (gapY + r*(wHeight + gapY)) + "px";
+    c++;
+    if (c >= cols) { c = 0; r++; }
+  });
+}
+window.addEventListener('load', layoutWindows);
+window.addEventListener('resize', layoutWindows);
+
+let z = 10;
+document.querySelectorAll('.window').forEach(win => {
+  const h = win.querySelector('.window-header');
+  h.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('window-btn')) return;
+    win.style.zIndex = ++z;
+    const r = win.getBoundingClientRect();
+    const ox = e.clientX - r.left;
+    const oy = e.clientY - r.top;
+    function m(ev){ win.style.left=(ev.clientX-ox)+"px"; win.style.top=(ev.clientY-oy)+"px"; }
+    function u(){ document.removeEventListener('mousemove',m); document.removeEventListener('mouseup',u); }
+    document.addEventListener('mousemove', m);
+    document.addEventListener('mouseup', u);
+  });
+});
+
+setInterval(() => {
+  const now = new Date();
+  document.getElementById('time').textContent =
+    now.toLocaleDateString('en-US') + " " + now.toLocaleTimeString('en-US', { hour12: false });
+}, 1000);
+
+const cursor = document.getElementById('neon-cursor');
+document.addEventListener('mousemove', e => {
+  const x = e.clientX + Math.sin(Date.now()/150)*5;
+  const y = e.clientY + Math.cos(Date.now()/150)*5;
+  cursor.style.transform = `translate(${x}px,${y}px)`;
+});
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+osc.type = 'sine';
+osc.frequency.value = 60;
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+gain.gain.value = 0.02;
+osc.start();
+setInterval(() => {
+  osc.frequency.value = 60 + (Math.random()*5-2.5);
+}, 200);
+</script>
+
+</body>
+</html>
