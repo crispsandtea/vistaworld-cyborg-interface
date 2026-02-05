@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>vistaworld // System Unit 393AP</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=DM+Mono&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
+
+:root{
+  --cyan:#00ffea;
+  --magenta:#ff00ff;
+  --blue:#4169ff;
+  --yellow:#ffff00;
+}
+
+body{
+  background:#000;
+  font-family:'VT323', monospace;
+  cursor: none;
+}
+
+#neon-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, #00ffea 0%, #ff00ff 60%, #4169ff 100%);
+  box-shadow: 0 0 10px #00ffea, 0 0 20px #ff00ff, 0 0 30px #4169ff;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s ease, box-shadow 0.2s ease;
+}
+
+.desktop-bg{
+  position:fixed;
+  inset:0;
+  background:url("hyperconnectivity.jpg") center/cover no-repeat;
+  z-index:0;
+}
+.desktop-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+}
+
+.crt-overlay {
+  position: fixed;
+  inset:0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0,
+    rgba(0,0,0,0.03) 1px
+  );
+  mix-blend-mode: overlay;
+  animation: flicker 0.15s infinite;
+  z-index:1000;
+}
+@keyframes flicker {
+  0%{opacity:0.05;}
+  50%{opacity:0.15;}
+  100%{opacity:0.05;}
+}
+
+.window{
+  position:absolute;
+  background:rgba(15,15,15,0.95);
+  border:2px solid;
+  border-radius:8px;
+  box-shadow:0 0 30px rgba(0,0,0,0.8);
+  overflow:hidden;
+}
+
+.window-header{
+  padding:8px 12px;
+  background:linear-gradient(#2a2a2a,#111);
+  border-bottom:2px solid;
+  cursor:move;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  user-select:none;
+}
+
+.window-title{
+  font-family:'Press Start 2P', monospace;
+  font-size:10px;
+}
+
+.window-controls{display:flex;gap:6px;}
+.window-btn{width:14px;height:14px;border-radius:2px;cursor:pointer;}
+.close{background:#ff5f56;}
+.minimize{background:#ffbd2e;}
+.maximize{background:#27c93f;}
+
+.window-content{
+  padding:16px;
+  color:#fff;
+  font-size:16px;
+  line-height:1.5;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.logo-text{
+  font-family:'Press Start 2P', monospace;
+  font-size:48px;
+  white-space:nowrap;
+  color:var(--blue);
+  text-shadow:3px 3px 0 var(--magenta),6px 6px 0 var(--cyan);
+}
+
+.music-entry {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--cyan);
+}
+
+.music-entry:last-child {
+  border-bottom: none;
+}
+
+.music-entry a {
+  color: var(--cyan);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.music-entry a:hover {
+  color: var(--magenta);
+  text-shadow: 0 0 10px var(--magenta);
+}
+
+.taskbar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:50px;
+  background:rgba(10,10,10,0.95);
+  border-top:2px solid var(--cyan);
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  z-index:500;
+}
+.taskbar-time{margin-left:auto;color:var(--magenta);}
+</style>
+</head>
+
+<body>
+<div class="desktop-bg"></div>
+<div class="crt-overlay"></div>
+<div id="neon-cursor"></div>
+
+<div class="desktop">
+
+<div class="window" id="logo-window">
+  <div class="window-header">
+    <div class="window-title">LOGO.PNG</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="logo-text">vistaworld</div>
+  </div>
+</div>
+
+<div class="window" id="music-window">
+  <div class="window-header">
+    <div class="window-title">MUSIC.TXT</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="music-entry"><a href="https://drive.google.com/file/d/1avDRiIr9WgQC-dFIcvvNh6F5TNuBbVue/view">Facechain - Accensor (2018)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/file/d/1JWkNRTo5FGK6e96RKKya17ZHJl-nPHA1/view">Facechain - Rapture (2018)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/file/d/1e6UllLaHutNkoqTpdSSy4tB1Cuo19DEU/view">Facechain - 07.11.19 Queens NY (2019)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/file/d/139DYrS7gfPzkETtuB6iyUoEEgY0TNmFe/view">Facechain - Robot (2020)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/file/d/1E-2BEFIhoKgIF3HtMWePr426tPE4QGgC/view">Facechain - Eyes Wide Hollow (2023)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/file/d/1YRbGzkh3K7bhHMOAJLHdtXPp1pK6jN5N/view">Facechain - The Madman Maker (2024)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/file/d/11RrKFGLy0vHQmly35FhCj6QCsxYCfmSJ/view">Deiphix - Vistaworld Sound Arts Collection (2015/2024)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/file/d/1qWX640onXEfI1lT67NL14j6z3eqJAe1b/view">Facechain/Deiphix - Drip (2015/2024)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/file/d/15hE9RCKfmZBafg3KOMjbFzjp0-gFzC9M/view">Facechain - Tacit Built (2024)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/file/d/1mmdRRuzg2Dp0CPhibY9PFrLmvSrFpL1t/view">Facechain - Silentdisctype (2024)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/drive/folders/1k88gcFBOPrBqNyYrWw7OLWJuVVF9Ca-f">Facechain - Ptowave (2025)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/drive/folders/1jbv6GTSUBCCYopUWLykbqeLFyMyQYChL?usp=drive_link">Facechain - Screenburnin (2025)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/drive/folders/1M5Swh-j6TvMV9Ttu6dS7-_Ws9CP83R8p?usp=drive_link">Alqaedahaptics - Necroconsortium (2025)</a></div>
+    <div class="music-entry"><a href="https://drive.google.com/drive/folders/1bgxvSDwoBu3lkZ5yPYH2l11jQTf_qO29?usp=drive_link">DJ Newhomosapien - Mashups (2025)</a></div>
+  </div>
+</div>
+
+<div class="window" id="djmixes-window">
+  <div class="window-header">
+    <div class="window-title">DJ_MIXES.TXT</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="music-entry"><a href="https://youtu.be/yzE8I1hyXb8?si=SPNgTyi8cbo7MxAn">DJ Newhomosapien Live #2 15.10.2025</a></div>
+    <div class="music-entry"><a href="https://youtu.be/PA5UxAAmGYg?si=yjRg7YCgP5ZCeeBB">DJ Newhomosapien Live #5 29.11.2025</a></div>
+    <div class="music-entry"><a href="https://youtu.be/qoKzgqvI3e8?si=Y9HI1JuG5HqjKV0t">DJ Newhomosapien Live #6 22.01.2026</a></div>
+    <div class="music-entry"><a href="https://youtu.be/3Ov957j8UiA?si=RI7_W16n6t0jSq0o">DJ Newhomosapien Live #7 31.01.2026</a></div>
+  </div>
+</div>
+
+</div>
+
+<div class="taskbar">
+  ◉ SYSTEM ONLINE
+  <div class="taskbar-time" id="time"></div>
+</div>
+
+<script>
+function layoutWindows() {
+  const wins = [...document.querySelectorAll('.window')];
+  const cols = 2;
+  const gapX = 40;
+  const gapY = 40;
+  const colWidth = (window.innerWidth - gapX*(cols+1)) / cols;
+  let r = 0, c = 0;
+
+  wins.forEach(win => {
+    const wWidth = win.offsetWidth || colWidth;
+    const wHeight = win.offsetHeight || 200;
+    win.style.left = (gapX + c*(colWidth + gapX)) + "px";
+    win.style.top = (gapY + r*(wHeight + gapY)) + "px";
+    c++;
+    if (c >= cols) { c = 0; r++; }
+  });
+}
+window.addEventListener('load', layoutWindows);
+window.addEventListener('resize', layoutWindows);
+
+let z = 10;
+document.querySelectorAll('.window').forEach(win => {
+  const h = win.querySelector('.window-header');
+  h.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('window-btn')) return;
+    win.style.zIndex = ++z;
+    const r = win.getBoundingClientRect();
+    const ox = e.clientX - r.left;
+    const oy = e.clientY - r.top;
+    function m(ev){ win.style.left=(ev.clientX-ox)+"px"; win.style.top=(ev.clientY-oy)+"px"; }
+    function u(){ document.removeEventListener('mousemove',m); document.removeEventListener('mouseup',u); }
+    document.addEventListener('mousemove', m);
+    document.addEventListener('mouseup', u);
+  });
+});
+
+setInterval(() => {
+  const now = new Date();
+  document.getElementById('time').textContent =
+    now.toLocaleDateString('en-US') + " " + now.toLocaleTimeString('en-US', { hour12: false });
+}, 1000);
+
+const cursor = document.getElementById('neon-cursor');
+document.addEventListener('mousemove', e => {
+  const x = e.clientX + Math.sin(Date.now()/150)*5;
+  const y = e.clientY + Math.cos(Date.now()/150)*5;
+  cursor.style.transform = `translate(${x}px,${y}px)`;
+});
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+osc.type = 'sine';
+osc.frequency.value = 60;
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+gain.gain.value = 0.02;
+osc.start();
+setInterval(() => {
+  osc.frequency.value = 60 + (Math.random()*5-2.5);
+}, 200);
+</script>
+
+</body>
+</html>
