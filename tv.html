@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>vistaworld // System Unit 393AP</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=DM+Mono&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
+
+:root{
+  --cyan:#00ffea;
+  --magenta:#ff00ff;
+  --blue:#4169ff;
+  --yellow:#ffff00;
+}
+
+body{
+  background:#000;
+  font-family:'VT323', monospace;
+  cursor: none;
+}
+
+#neon-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, #00ffea 0%, #ff00ff 60%, #4169ff 100%);
+  box-shadow: 0 0 10px #00ffea, 0 0 20px #ff00ff, 0 0 30px #4169ff;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s ease, box-shadow 0.2s ease;
+}
+
+.desktop-bg{
+  position:fixed;
+  inset:0;
+  background:url("hyperconnectivity.jpg") center/cover no-repeat;
+  z-index:0;
+}
+.desktop-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+}
+
+.crt-overlay {
+  position: fixed;
+  inset:0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0,
+    rgba(0,0,0,0.03) 1px
+  );
+  mix-blend-mode: overlay;
+  animation: flicker 0.15s infinite;
+  z-index:1000;
+}
+@keyframes flicker {
+  0%{opacity:0.05;}
+  50%{opacity:0.15;}
+  100%{opacity:0.05;}
+}
+
+.window{
+  position:absolute;
+  background:rgba(15,15,15,0.95);
+  border:2px solid;
+  border-radius:8px;
+  box-shadow:0 0 30px rgba(0,0,0,0.8);
+  overflow:hidden;
+}
+
+.window-header{
+  padding:8px 12px;
+  background:linear-gradient(#2a2a2a,#111);
+  border-bottom:2px solid;
+  cursor:move;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  user-select:none;
+}
+
+.window-title{
+  font-family:'Press Start 2P', monospace;
+  font-size:10px;
+}
+
+.window-controls{display:flex;gap:6px;}
+.window-btn{width:14px;height:14px;border-radius:2px;cursor:pointer;}
+.close{background:#ff5f56;}
+.minimize{background:#ffbd2e;}
+.maximize{background:#27c93f;}
+
+.window-content{
+  padding:16px;
+  color:#fff;
+  font-size:16px;
+  line-height:1.5;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.logo-text{
+  font-family:'Press Start 2P', monospace;
+  font-size:48px;
+  white-space:nowrap;
+  color:var(--blue);
+  text-shadow:3px 3px 0 var(--magenta),6px 6px 0 var(--cyan);
+}
+
+.year-header {
+  color: var(--yellow);
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.year-header:first-child {
+  margin-top: 0;
+}
+
+.video-entry {
+  margin-bottom: 12px;
+  padding-left: 10px;
+}
+
+.video-entry a {
+  color: var(--cyan);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.video-entry a:hover {
+  color: var(--magenta);
+  text-shadow: 0 0 10px var(--magenta);
+}
+
+.taskbar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:50px;
+  background:rgba(10,10,10,0.95);
+  border-top:2px solid var(--cyan);
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  z-index:500;
+}
+.taskbar-time{margin-left:auto;color:var(--magenta);}
+</style>
+</head>
+
+<body>
+<div class="desktop-bg"></div>
+<div class="crt-overlay"></div>
+<div id="neon-cursor"></div>
+
+<div class="desktop">
+
+<div class="window" id="logo-window">
+  <div class="window-header">
+    <div class="window-title">LOGO.PNG</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="logo-text">vistaworld</div>
+  </div>
+</div>
+
+<div class="window" id="videoart-window">
+  <div class="window-header">
+    <div class="window-title">VIDEO_ART.TXT</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="year-header">2022</div>
+    <div class="video-entry"><a href="https://youtu.be/k17GA5E66u4">I Am a Computer Virus and I Love You</a></div>
+    <div class="video-entry"><a href="https://youtu.be/CNIGILazNzU">Namcot Dreams</a></div>
+    <div class="video-entry"><a href="https://youtu.be/U86EyW7CGUU">Fruits and Vegetables</a></div>
+    <div class="video-entry"><a href="https://youtu.be/byDkICIV7fw">Kolussus</a></div>
+    
+    <div class="year-header">2024</div>
+    <div class="video-entry"><a href="https://youtu.be/D_zxFz4aS8o">Drip</a></div>
+    <div class="video-entry"><a href="https://youtu.be/gJ3Gt2CiY3Q">posthuman communication network</a></div>
+    <div class="video-entry"><a href="https://youtu.be/8vuQGuO1Lc8">posthumanGOD/hallucination/interference</a></div>
+    <div class="video-entry"><a href="https://youtu.be/0aHkWUOZOww">Pax Digitana 0 -The Birth of HP-</a></div>
+    <div class="video-entry"><a href="https://youtu.be/aOQr2An3t6U">Language::noise</a></div>
+    
+    <div class="year-header">2025</div>
+    <div class="video-entry"><a href="https://youtu.be/6-SY4WJgvbY?si=xYRJPe_tnao5wVl5">POV: You realize you weren't broken, just early</a></div>
+    <div class="video-entry"><a href="https://youtu.be/CPWDqfnotyA?si=qMe-I1I_eFgFmBu-">Binary Control - "The Printer"</a></div>
+    <div class="video-entry"><a href="https://youtu.be/h3xnc8uxivA?si=G0eOEED_gY1OXoD3">Hell Simulation</a></div>
+    <div class="video-entry"><a href="https://drive.google.com/file/d/1FbrKDwkNfUG-P8Cmrv2K9fB1kkvvKpyS/view?usp=sharing">Human Love Synthesis Project</a></div>
+    <div class="video-entry"><a href="https://youtube.com/shorts/NbzfMlZnLhU?si=v4r--CVPAH9sj3Cn">Are You My Friend?</a></div>
+  </div>
+</div>
+
+</div>
+
+<div class="taskbar">
+  ◉ SYSTEM ONLINE
+  <div class="taskbar-time" id="time"></div>
+</div>
+
+<script>
+function layoutWindows() {
+  const wins = [...document.querySelectorAll('.window')];
+  const cols = 2;
+  const gapX = 40;
+  const gapY = 40;
+  const colWidth = (window.innerWidth - gapX*(cols+1)) / cols;
+  let r = 0, c = 0;
+
+  wins.forEach(win => {
+    const wWidth = win.offsetWidth || colWidth;
+    const wHeight = win.offsetHeight || 200;
+    win.style.left = (gapX + c*(colWidth + gapX)) + "px";
+    win.style.top = (gapY + r*(wHeight + gapY)) + "px";
+    c++;
+    if (c >= cols) { c = 0; r++; }
+  });
+}
+window.addEventListener('load', layoutWindows);
+window.addEventListener('resize', layoutWindows);
+
+let z = 10;
+document.querySelectorAll('.window').forEach(win => {
+  const h = win.querySelector('.window-header');
+  h.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('window-btn')) return;
+    win.style.zIndex = ++z;
+    const r = win.getBoundingClientRect();
+    const ox = e.clientX - r.left;
+    const oy = e.clientY - r.top;
+    function m(ev){ win.style.left=(ev.clientX-ox)+"px"; win.style.top=(ev.clientY-oy)+"px"; }
+    function u(){ document.removeEventListener('mousemove',m); document.removeEventListener('mouseup',u); }
+    document.addEventListener('mousemove', m);
+    document.addEventListener('mouseup', u);
+  });
+});
+
+setInterval(() => {
+  const now = new Date();
+  document.getElementById('time').textContent =
+    now.toLocaleDateString('en-US') + " " + now.toLocaleTimeString('en-US', { hour12: false });
+}, 1000);
+
+const cursor = document.getElementById('neon-cursor');
+document.addEventListener('mousemove', e => {
+  const x = e.clientX + Math.sin(Date.now()/150)*5;
+  const y = e.clientY + Math.cos(Date.now()/150)*5;
+  cursor.style.transform = `translate(${x}px,${y}px)`;
+});
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+osc.type = 'sine';
+osc.frequency.value = 60;
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+gain.gain.value = 0.02;
+osc.start();
+setInterval(() => {
+  osc.frequency.value = 60 + (Math.random()*5-2.5);
+}, 200);
+</script>
+
+</body>
+</html>
