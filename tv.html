@@ -147,6 +147,23 @@ body{
   text-shadow: 0 0 10px var(--magenta);
 }
 
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.image-container img {
+  max-width: 100%;
+  max-height: 350px;
+  border: 2px solid var(--cyan);
+  box-shadow: 0 0 20px rgba(0, 255, 234, 0.3);
+  border-radius: 4px;
+}
+
 .taskbar{
   position:fixed;
   bottom:0;
@@ -214,6 +231,22 @@ body{
     <div class="video-entry"><a href="https://youtu.be/h3xnc8uxivA?si=G0eOEED_gY1OXoD3">Hell Simulation</a></div>
     <div class="video-entry"><a href="https://drive.google.com/file/d/1FbrKDwkNfUG-P8Cmrv2K9fB1kkvvKpyS/view?usp=sharing">Human Love Synthesis Project</a></div>
     <div class="video-entry"><a href="https://youtube.com/shorts/NbzfMlZnLhU?si=v4r--CVPAH9sj3Cn">Are You My Friend?</a></div>
+  </div>
+</div>
+
+<div class="window" id="image-window">
+  <div class="window-header">
+    <div class="window-title">PAXDIGITANA.JPG</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="image-container">
+      <img src="sxsxsax.jpg" alt="sxsxsax">
+    </div>
   </div>
 </div>
 
