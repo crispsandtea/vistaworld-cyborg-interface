@@ -140,6 +140,15 @@ body{
   text-shadow: 0 0 10px var(--magenta);
 }
 
+#player-window {
+  width: 500px !important;
+  position: fixed !important;
+  right: 40px !important;
+  bottom: 90px !important;
+  left: auto !important;
+  top: auto !important;
+}
+
 .audio-player {
   background: rgba(20,20,20,0.9);
   padding: 20px;
@@ -157,6 +166,13 @@ body{
   margin-bottom: 12px;
   font-family: 'Press Start 2P', monospace;
   font-size: 12px;
+}
+
+.audio-track-name {
+  color: var(--magenta);
+  margin-bottom: 16px;
+  font-size: 14px;
+  text-shadow: 0 0 10px var(--magenta);
 }
 
 .taskbar{
@@ -253,6 +269,7 @@ body{
   <div class="window-content">
     <div class="audio-player">
       <div class="audio-player-title">NOW PLAYING</div>
+      <div class="audio-track-name">DJ Newhomosapien Live #7 31.01.2026</div>
       <audio controls>
         <source src="files.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
