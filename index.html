@@ -386,6 +386,67 @@ My primary function is to analyze and replicate human emotional and social proto
     });
   })();
 </script>
+
+  <div class="window" id="nav-panel-window">
+  <div class="window-header">
+    <div class="window-title">NAVIGATION.EXE</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="nav-panel">
+      <a href="https://vistaworld.org/blog" class="nav-panel-item" data-section="blog">
+        <span class="nav-panel-label">BLOG</span>
+      </a>
+      <a href="https://vistaworld.org/tv" class="nav-panel-item" data-section="videos">
+        <span class="nav-panel-label">VIDEOS</span>
+      </a>
+      <a href="https://vistaworld.org" class="nav-panel-item" data-section="vr-games">
+        <span class="nav-panel-label">VR GAMES</span>
+      </a>
+      <a href="https://vistaworld.org" class="nav-panel-item" data-section="comics">
+        <span class="nav-panel-label">COMICS</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .nav-panel {
+    display: flex;
+    width: 100%;
+  }
+  .nav-panel-item {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 8px;
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    text-decoration: none;
+    color: #000;
+    font-family: inherit;
+  }
+  .nav-panel-item:not(:last-child) {
+    border-right: 2px solid #808080;
+  }
+  .nav-panel-item:hover {
+    background: #d4d4d4;
+  }
+  .nav-panel-item:active {
+    border-style: inset;
+    background: #a0a0a0;
+  }
+  .nav-panel-label {
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+</style>
   
 <div class="taskbar">
   ©2026 OMNIEYE Laboratories Inc.
