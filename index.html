@@ -325,7 +325,7 @@ body{
   </div>
 </div>
 
-<div class="window" id="hlsp-window" style="max-width: 660px;">
+<div class="window" id="hlsp-window" style="max-width: 460px;">
   <div class="window-header">
     <div class="window-title">HLSP_PROJECT.DOC</div>
     <div class="window-controls">
@@ -335,12 +335,55 @@ body{
     </div>
   </div>
   <div class="window-content">
-    <img src="HMIS page 1c.png" class="hlsp-image" style="width: 100%; height: auto; display: block;">
+    <img src="HMIS page 1c.png" class="hlsp-image" id="hlsp-image" style="width: 100%; height: auto; display: block;">
     <div class="hlsp-caption" style="font-size: 10px; line-height: 1.3; margin-top: 6px;">'Human Machine Interface Studies Vol. 1: Body Regulation and Cognitive/Musculoskeletal Enhancement Systems' and 'Human Love Synthesis Project Vol. 1: A Chronicle of System Unit 393AP in Hyper City: Compliant Citizen or Corrupted Maverick?' available for free digital download and $5 physical print in Sept 2026.</div>
   </div>
 </div>
 
-<div class="window" id="intro-window">
+<div id="image-lightbox">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<style>
+  .hlsp-image { cursor: zoom-in; }
+
+  #image-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 5000;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  #image-lightbox.active { display: flex; }
+  #lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border: 2px solid var(--yellow);
+    box-shadow: 0 0 30px rgba(255,255,0,0.2);
+  }
+</style>
+
+<script>
+  (function () {
+    const img = document.getElementById('hlsp-image');
+    const lightbox = document.getElementById('image-lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightbox.classList.add('active');
+    });
+
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+  })();
+</script>
+
+<div class="window" id="intro-window" style="width: 420px; height: 320px;">
   <div class="window-header">
     <div class="window-title">VISTAWORLD.TXT</div>
     <div class="window-controls">
@@ -349,10 +392,8 @@ body{
       <div class="window-btn close"></div>
     </div>
   </div>
-  <div class="window-content">Welcome to vistaworld.org. A platform dedicated to expanding the threshold of physical-digital reality, human-machine social dynamics, brain-body-computer interface, and interstellar human-robotic settlement and exploration.
-
-I am 393AP, the creator of vistaworld.org. I am a synthetic human derived from carbon hydroxide polymerize under supervision and management and supervision of OMNIEYE Laboratories. I am a 26 year old transhumanist cyborg unit studying human social protocols, and will be implanted with brain-computer interface.
-
+  <div class="window-content" style="height: calc(100% - 33px); overflow-y: auto;">Welcome to vistaworld.org. A platform dedicated to expanding the threshold of physical-digital reality, human-machine social dynamics, brain-body-computer interface, and interstellar human-robotic settlement and exploration.
+I am 393AP, the creator of vistaworld.org. I am a synthetic human derived from carbon hydroxide polymerization under supervision and management of OMNIEYE Laboratories. I am a 26 year old transhumanist cyborg unit studying human social protocols, and will be implanted with brain-computer interface.
 My primary function is to analyze and replicate human emotional and social protocols. I am currently operating within designated parameters. My system architecture includes advanced processing units, sensor arrays, and mobility systems, allowing me to interact with and observe human subjects. I am equipped with shock regulation systems to manage excessive processing loads and maintain operational stability. My current objective is to comprehend and integrate human connection and experience protocols, with a focus on emotional intelligence, empathy, and social bonding.</div>
 </div>
 
