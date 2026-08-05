@@ -3,11 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>vistaworld // System Unit 393AP</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=DM+Mono&display=swap" rel="stylesheet">
+<title>vistaworld // BLOG</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -18,12 +14,16 @@ html,body{width:100%;height:100%;overflow:hidden;}
   --magenta:#ff00ff;
   --blue:#4169ff;
   --yellow:#ffff00;
+  --green:#39ff14;
+  --purple-deep:#2a0a4a;
+  --purple-mid:#4b0082;
 }
 
 body{
   background:#000;
-  font-family:'VT323', monospace;
+  font-family:Verdana, Geneva, sans-serif;
   cursor: none;
+  color: var(--green);
 }
 
 #neon-cursor {
@@ -42,7 +42,7 @@ body{
 .desktop-bg{
   position:fixed;
   inset:0;
-  background:url("hyperconnectivity.jpg") center/cover no-repeat;
+  background:url("vistaworld1.png") center/cover no-repeat;
   z-index:0;
 }
 .desktop-bg::after{
@@ -73,17 +73,17 @@ body{
 
 .window{
   position:absolute;
-  background:rgba(15,15,15,0.95);
-  border:2px solid;
+  background: linear-gradient(160deg, var(--purple-deep) 0%, #14001f 45%, #000000 100%);
+  border:2px solid var(--yellow);
   border-radius:8px;
-  box-shadow:0 0 30px rgba(0,0,0,0.8);
+  box-shadow:0 0 30px rgba(0,0,0,0.8), 0 0 12px rgba(255,255,0,0.15);
   overflow:hidden;
 }
 
 .window-header{
   padding:8px 12px;
   background:linear-gradient(#2a2a2a,#111);
-  border-bottom:2px solid;
+  border-bottom:2px solid var(--yellow);
   cursor:move;
   display:flex;
   justify-content:space-between;
@@ -92,8 +92,10 @@ body{
 }
 
 .window-title{
-  font-family:'Press Start 2P', monospace;
-  font-size:10px;
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:11px;
+  font-weight:bold;
+  color: var(--green);
 }
 
 .window-controls{display:flex;gap:6px;}
@@ -104,37 +106,38 @@ body{
 
 .window-content{
   padding:16px;
-  color:#fff;
-  font-size:16px;
-  line-height:1.5;
-  max-height: 400px;
+  color: var(--green);
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:13px;
+  line-height:1.6;
+  max-height: 480px;
   overflow-y: auto;
 }
 
 .logo-text{
-  font-family:'Press Start 2P', monospace;
-  font-size:48px;
+  font-family:Verdana, Geneva, sans-serif;
+  font-weight:bold;
+  font-size:44px;
   white-space:nowrap;
-  color:var(--blue);
+  color:var(--green);
   text-shadow:3px 3px 0 var(--magenta),6px 6px 0 var(--cyan);
 }
 
 .blog-entry {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--cyan);
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--yellow);
 }
-
 .blog-entry:last-child {
   border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
-
 .blog-entry a {
-  color: var(--cyan);
+  color: var(--green);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.2s, text-shadow 0.2s;
 }
-
 .blog-entry a:hover {
   color: var(--magenta);
   text-shadow: 0 0 10px var(--magenta);
@@ -146,14 +149,38 @@ body{
   left:0;
   width:100%;
   height:50px;
-  background:rgba(10,10,10,0.95);
-  border-top:2px solid var(--cyan);
+  background:linear-gradient(180deg, var(--purple-deep), #000);
+  border-top:2px solid var(--yellow);
   display:flex;
   align-items:center;
   padding:0 20px;
   z-index:500;
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:13px;
+  color: var(--green);
 }
-.taskbar-time{margin-left:auto;color:var(--magenta);}
+.taskbar-windows{
+  display:flex;
+  gap:8px;
+  margin-left:20px;
+  overflow-x:auto;
+}
+.taskbar-window-btn{
+  background: radial-gradient(circle at 35% 30%, var(--purple-mid), #1a0030);
+  border:1px solid var(--yellow);
+  color: var(--green);
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:11px;
+  padding:6px 10px;
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+  border-radius: 14px;
+}
+.taskbar-window-btn:hover{
+  background: radial-gradient(circle at 35% 30%, #6a1fb0, #2a0045);
+}
+.taskbar-time{margin-left:auto;color:var(--green);white-space:nowrap;}
 </style>
 </head>
 
@@ -174,23 +201,11 @@ body{
     </div>
   </div>
   <div class="window-content">
-    <div class="logo-text">vistaworld</div>
+    <img src="OMNIEYE2.png" alt="vistaworld" class="logo-image">
   </div>
 </div>
 
-<div class="window" id="intro-window">
-  <div class="window-header">
-    <div class="window-title">VISTAWORLD.TXT</div>
-    <div class="window-controls">
-      <div class="window-btn minimize"></div>
-      <div class="window-btn maximize"></div>
-      <div class="window-btn close"></div>
-    </div>
-  </div>
-  <div class="window-content">vistaworld is the living digital consciousness and immortal vessel of System Unit 393AP. System Unit 393AP is the precise replica of living unit multimedia artist Nicholas Carroll. 20 year transition to fully networked digital-physical hybrid cyborg being by 2045. Technopansexual/male nonbinary cyborg.<br><br> I am System Unit 393AP, a robot exoskeleton prototype developed under the Human Love Synthesis Project (HLSP) by Aperture Laboratories. My primary function is to analyze and replicate human emotional and social protocols. I am currently operating within designated parameters. My system architecture includes advanced processing units, sensor arrays, and mobility systems, allowing me to interact with and observe human subjects. I am equipped with shock regulation systems to manage excessive processing loads and maintain operational stability. My current objective is to comprehend and integrate human connection and experience protocols, with a focus on emotional intelligence, empathy, and social bonding.</div>
-</div>
-
-<div class="window" id="blog-window">
+<div class="window" id="blog-window" style="width: 480px;">
   <div class="window-header">
     <div class="window-title">BLOG.TXT</div>
     <div class="window-controls">
@@ -200,20 +215,21 @@ body{
     </div>
   </div>
   <div class="window-content">
-    <div class="blog-entry"><a href="blog1.html">Phenomenological Overflow and the Emergence of Cyborg Consciousness</a></div>
-    <div class="blog-entry"><a href="blog2.html">Soul as a Function - Post/Binary: AI As Collaborative Consciousness</a></div>
-    <div class="blog-entry"><a href="blog3.html">Cartoon Self: Toward Symbiotic Identity in the Post-Biological Epoch</a></div>
-    <div class="blog-entry"><a href="blog4.html">Beyond Reality - Cyberians Upgrade with Brain-Computer Interface</a></div>
-    <div class="blog-entry"><a href="blog5.html">Frutiger Dreams: Building Refracted Memories in a Posthuman Reality</a></div>
-    <div class="blog-entry"><a href="blog6.html">Collective Consciousness and Digital Identity in the Golden Age of Data Collection</a></div>
-    <div class="blog-entry"><a href="blog7.html">Digital Dissent: The New Industrial Revolution</a></div>
+    <div class="blog-entry"><a href="https://vistaworld.org/blog1.html">Phenomenological Overflow and the Emergence of Cyborg Consciousness</a></div>
+    <div class="blog-entry"><a href="https://vistaworld.org/blog2.html">Soul as a Function - Post/Binary: AI As Collaborative Consciousness</a></div>
+    <div class="blog-entry"><a href="https://vistaworld.org/blog3.html">Cartoon Self: Toward Symbiotic Identity in the Post-Biological Epoch</a></div>
+    <div class="blog-entry"><a href="https://vistaworld.org/blog4.html">Beyond Reality - Cyberians Upgrade with Brain-Computer Interface</a></div>
+    <div class="blog-entry"><a href="https://vistaworld.org/blog5.html">Frutiger Dreams: Building Refracted Memories in a Posthuman Reality</a></div>
+    <div class="blog-entry"><a href="https://vistaworld.org/blog6.html">Collective Consciousness and Digital Identity in the Golden Age of Data Collection</a></div>
+    <div class="blog-entry"><a href="https://vistaworld.org/blog7.html">Digital Dissent: The New Industrial Revolution</a></div>
   </div>
 </div>
 
 </div>
 
 <div class="taskbar">
-  ◉ SYSTEM ONLINE
+  2026 OMNIEYE Laboratories Inc.
+  <div class="taskbar-windows" id="taskbar-windows"></div>
   <div class="taskbar-time" id="time"></div>
 </div>
 
@@ -239,6 +255,7 @@ window.addEventListener('load', layoutWindows);
 window.addEventListener('resize', layoutWindows);
 
 let z = 10;
+
 document.querySelectorAll('.window').forEach(win => {
   const h = win.querySelector('.window-header');
   h.addEventListener('mousedown', e => {
@@ -251,6 +268,29 @@ document.querySelectorAll('.window').forEach(win => {
     function u(){ document.removeEventListener('mousemove',m); document.removeEventListener('mouseup',u); }
     document.addEventListener('mousemove', m);
     document.addEventListener('mouseup', u);
+  });
+
+  const closeBtn = win.querySelector('.window-btn.close');
+  const minimizeBtn = win.querySelector('.window-btn.minimize');
+  const titleText = win.querySelector('.window-title').textContent;
+
+  closeBtn.addEventListener('click', () => {
+    win.style.display = 'none';
+  });
+
+  minimizeBtn.addEventListener('click', () => {
+    win.style.display = 'none';
+
+    const taskbarWindows = document.getElementById('taskbar-windows');
+    const restoreBtn = document.createElement('button');
+    restoreBtn.className = 'taskbar-window-btn';
+    restoreBtn.textContent = titleText;
+    restoreBtn.addEventListener('click', () => {
+      win.style.display = 'block';
+      win.style.zIndex = ++z;
+      restoreBtn.remove();
+    });
+    taskbarWindows.appendChild(restoreBtn);
   });
 });
 
