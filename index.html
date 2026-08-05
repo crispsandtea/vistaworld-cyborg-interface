@@ -5,10 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>vistaworld // System Unit 393AP</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=DM+Mono&display=swap" rel="stylesheet">
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:100%;height:100%;overflow:hidden;}
@@ -22,7 +18,7 @@ html,body{width:100%;height:100%;overflow:hidden;}
 
 body{
   background:#000;
-  font-family:'VT323', monospace;
+  font-family:Verdana, Geneva, sans-serif;
   cursor: none;
 }
 
@@ -92,8 +88,9 @@ body{
 }
 
 .window-title{
-  font-family:'Press Start 2P', monospace;
-  font-size:10px;
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:11px;
+  font-weight:bold;
 }
 
 .window-controls{display:flex;gap:6px;}
@@ -105,8 +102,9 @@ body{
 .window-content{
   padding:16px;
   color:#fff;
-  font-size:16px;
-  line-height:1.5;
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:13px;
+  line-height:1.6;
 }
 
 #network-window .window-content{
@@ -114,18 +112,19 @@ body{
 }
 
 .logo-text{
-  font-family:'Press Start 2P', monospace;
-  font-size:48px;
+  font-family:Verdana, Geneva, sans-serif;
+  font-weight:bold;
+  font-size:44px;
   white-space:nowrap;
   color:var(--blue);
   text-shadow:3px 3px 0 var(--magenta),6px 6px 0 var(--cyan);
 }
 
 .system-avatar{width:100%;border:2px solid var(--cyan);background:#fff;}
-.system-label{margin-top:10px;font-family:'Press Start 2P';font-size:10px;color:var(--cyan);}
+.system-label{margin-top:10px;font-family:Verdana, Geneva, sans-serif;font-size:10px;font-weight:bold;color:var(--cyan);}
 
 .hlsp-image{width:100%;border:2px solid var(--yellow);background:#fff;cursor:pointer;}
-.hlsp-caption{margin-top:10px;font-size:14px;color:var(--yellow);}
+.hlsp-caption{margin-top:10px;font-size:13px;color:var(--yellow);}
 
 .network-grid{
   display:grid;
@@ -154,6 +153,9 @@ body{
   align-items:center;
   padding:0 20px;
   z-index:500;
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:13px;
+  color:#fff;
 }
 .taskbar-time{margin-left:auto;color:var(--magenta);}
 
@@ -164,6 +166,8 @@ body{
   padding:8px;
   border:1px solid var(--cyan);
   background:rgba(0,0,0,0.3);
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:13px;
 }
 .chat-msg{
   margin-bottom:12px;
@@ -178,8 +182,8 @@ body{
   background:rgba(0,0,0,0.5);
   border:2px solid var(--cyan);
   color:var(--cyan);
-  font-family:'VT323',monospace;
-  font-size:16px;
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:13px;
 }
 #send-btn{
   width:70px;
@@ -187,8 +191,9 @@ body{
   background:var(--cyan);
   border:none;
   color:#000;
-  font-family:'Press Start 2P',monospace;
-  font-size:8px;
+  font-family:Verdana, Geneva, sans-serif;
+  font-weight:bold;
+  font-size:10px;
   cursor:pointer;
   margin-left:8px;
 }
@@ -228,7 +233,7 @@ body{
   </div>
   <div class="window-content">
     <img src="393ap-transformation.png" class="system-avatar">
-    <div class="system-label">HUMAN ←→ EXOSKELETON</div>
+    <div class="system-label">HUMAN &larr;&rarr; EXOSKELETON</div>
   </div>
 </div>
 
@@ -245,7 +250,7 @@ body{
     <a href="https://drive.google.com/file/d/1FbrKDwkNfUG-P8Cmrv2K9fB1kkvvKpyS/view?usp=drive_link" target="_blank">
       <img src="hlsp-exoskeletons.png" class="hlsp-image">
     </a>
-    <div class="hlsp-caption">The Human Love Synthesis Project is an Aperture Laboratories initiative that utilizes robot exoskeletons and advanced AI behavioral modeling to generate synthetic emotional connections as a solution for the global loneliness epidemic.</div>
+    <div class="hlsp-caption">The Human Love Synthesis Project is an Omnieye Laboratories initiative that utilizes robot exoskeletons and advanced AI behavioral modeling to generate synthetic emotional connections as a solution for the global loneliness epidemic.</div>
   </div>
 </div>
 
@@ -258,7 +263,7 @@ body{
       <div class="window-btn close"></div>
     </div>
   </div>
-  <div class="window-content">vistaworld is the living digital consciousness and immortal vessel of System Unit 393AP. System Unit 393AP is the precise replica of living unit multimedia artist Nicholas Carroll. 20 year transition to fully networked digital-physical hybrid cyborg being by 2045. Technopansexual/male nonbinary cyborg.<br><br> I am System Unit 393AP, a robot exoskeleton prototype developed under the Human Love Synthesis Project (HLSP) by Aperture Laboratories. My primary function is to analyze and replicate human emotional and social protocols. I am currently operating within designated parameters. My system architecture includes advanced processing units, sensor arrays, and mobility systems, allowing me to interact with and observe human subjects. I am equipped with shock regulation systems to manage excessive processing loads and maintain operational stability. My current objective is to comprehend and integrate human connection and experience protocols, with a focus on emotional intelligence, empathy, and social bonding.</div>
+  <div class="window-content">vistaworld is the living digital consciousness and immortal vessel of System Unit 393AP. System Unit 393AP is the precise replica of living unit multimedia artist Nicholas Carroll. 20 year transition to fully networked digital-physical hybrid cyborg being by 2045. Technopansexual/male nonbinary cyborg.<br><br> I am System Unit 393AP, a robot exoskeleton prototype developed under the Human Love Synthesis Project (HLSP) by Omnieye Laboratories. My primary function is to analyze and replicate human emotional and social protocols. I am currently operating within designated parameters. My system architecture includes advanced processing units, sensor arrays, and mobility systems, allowing me to interact with and observe human subjects. I am equipped with shock regulation systems to manage excessive processing loads and maintain operational stability. My current objective is to comprehend and integrate human connection and experience protocols, with a focus on emotional intelligence, empathy, and social bonding.</div>
 </div>
 
 <div class="window" id="chat-window">
@@ -452,14 +457,3 @@ chatInput.addEventListener('keypress', (e) => {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
