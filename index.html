@@ -327,7 +327,7 @@ body{
 
 <div class="window" id="hlsp-window" style="max-width: 460px;">
   <div class="window-header">
-    <div class="window-title">HLSP_PROJECT.DOC</div>
+    <div class="window-title">HLSP_HMIS_PROJECT.DOC</div>
     <div class="window-controls">
       <div class="window-btn minimize"></div>
       <div class="window-btn maximize"></div>
@@ -335,10 +335,24 @@ body{
     </div>
   </div>
   <div class="window-content">
-    <img src="HMIS page 1d.png" class="hlsp-image" id="hlsp-image" style="width: 100%; height: auto; display: block;">
-    <div class="hlsp-caption" style="font-size: 10px; line-height: 1.3; margin-top: 6px;">'Human Machine Interface Studies Vol. 1: Body Regulation and Cognitive/Musculoskeletal Enhancement Systems' and 'Human Love Synthesis Project Vol. 1: A Chronicle of System Unit 393AP in Hyper City: Compliant Citizen or Corrupted Maverick?' available for free digital download and $5 physical print in Sept 2026.</div>
+    <img src="HMIS page 1d.png" class="hlsp-image" id="hlsp-image" style="width: 100%; height: auto; display: block; cursor: pointer;">
+    <div class="hlsp-caption" style="font-size: 10px; line-height: 1.3; margin-top: 6px;">'Human Machine Interface Studies Vol. 1: Body Regulation and Cognitive/Musculoskeletal Enhancement Systems' and 'Human Love Synthesis Project Vol. 1: A Tale of System Unit 393AP in Hyper City: Compliant Citizen or Corrupted Maverick?' available for free digital download and $5 physical print in Sept 2026.</div>
+    <div style="text-align: center; margin-top: 6px; font-size: 10px; opacity: 0.7;">click cover to flip</div>
   </div>
 </div>
+
+<script>
+  (function() {
+    const images = ["HMIS page 1d.png", "HLSP page 1b.png"];
+    let currentIndex = 0;
+    const imgEl = document.getElementById("hlsp-image");
+
+    imgEl.addEventListener("click", function() {
+      currentIndex = (currentIndex + 1) % images.length;
+      imgEl.src = images[currentIndex];
+    });
+  })();
+</script>
 
 <div id="image-lightbox">
   <img id="lightbox-img" src="" alt="">
