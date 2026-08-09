@@ -335,22 +335,25 @@ body{
     </div>
   </div>
   <div class="window-content">
-    <img src="HMIS page 1d.png" class="hlsp-image" id="hlsp-image" style="width: 100%; height: auto; display: block; cursor: pointer;">
+    <div class="hlsp-image-stack" style="position: relative; width: 100%;">
+      <img src="HMIS_page_1d.png" class="hlsp-image hlsp-image-a" style="width: 100%; height: auto; display: block; transition: opacity 2s ease-in-out;">
+      <img src="HLSP_page_1b.png" class="hlsp-image hlsp-image-b" style="width: 100%; height: auto; display: block; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 2s ease-in-out;">
+    </div>
     <div class="hlsp-caption" style="font-size: 10px; line-height: 1.3; margin-top: 6px;">'Human Machine Interface Studies Vol. 1: Body Regulation and Cognitive/Musculoskeletal Enhancement Systems' and 'Human Love Synthesis Project Vol. 1: A Tale of System Unit 393AP in Hyper City: Compliant Citizen or Corrupted Maverick?' available for free digital download and $5 physical print in Sept 2026.</div>
-    <div style="text-align: center; margin-top: 6px; font-size: 10px; opacity: 0.7;">click cover to flip</div>
   </div>
 </div>
 
 <script>
   (function() {
-    const images = ["HMIS page 1d.png", "HLSP page 1b.png"];
-    let currentIndex = 0;
-    const imgEl = document.getElementById("hlsp-image");
+    const imageA = document.querySelector(".hlsp-image-a");
+    const imageB = document.querySelector(".hlsp-image-b");
+    let showingSecond = false;
 
-    imgEl.addEventListener("click", function() {
-      currentIndex = (currentIndex + 1) % images.length;
-      imgEl.src = images[currentIndex];
-    });
+    setInterval(function() {
+      showingSecond = !showingSecond;
+      imageA.style.opacity = showingSecond ? "0" : "1";
+      imageB.style.opacity = showingSecond ? "1" : "0";
+    }, 10000);
   })();
 </script>
 
