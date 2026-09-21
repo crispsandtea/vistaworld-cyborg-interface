@@ -7,7 +7,7 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;height:100%;overflow:hidden;}
+html,body{width:100%;min-height:100%;overflow-x:hidden;overflow-y:auto;}
 
 :root{
   --cyan:#00ffea;
@@ -24,6 +24,7 @@ body{
   font-family:Verdana, Geneva, sans-serif;
   cursor: none;
   color: var(--green);
+  padding-bottom:60px; /* keep content clear of the fixed taskbar */
 }
 
 #neon-cursor {
@@ -37,6 +38,12 @@ body{
   box-shadow: 0 0 10px #00ffea, 0 0 20px #ff00ff, 0 0 30px #4169ff;
   transform: translate(-50%, -50%);
   transition: transform 0.05s ease, box-shadow 0.2s ease;
+}
+
+.desktop{
+  position:relative;
+  width:100%;
+  min-height:100vh;
 }
 
 .desktop-bg{
@@ -237,23 +244,36 @@ body{
   justify-content: center;
 }
 .mix-toggle {
-  width: 76px;
-  height: 76px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: radial-gradient(circle at 32% 28%, #7a2fd6 0%, var(--purple-mid) 45%, #180027 100%);
   border: 2px solid var(--yellow);
   color: var(--green);
   cursor: pointer;
   font-family: inherit;
-  font-size: 9px;
+  font-size: 8px;
   font-weight: bold;
   text-align: center;
-  line-height: 1.2;
-  padding: 6px;
+  line-height: 1.25;
+  padding: 4px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
+  white-space: normal;
+  word-break: break-word;
+}
+.mix-toggle .mix-num{
+  display:block;
+  font-size:8.5px;
+}
+.mix-toggle .mix-date{
+  display:block;
+  font-size:8px;
+  margin-top:2px;
 }
 .mix-toggle:hover{
   background: radial-gradient(circle at 32% 28%, #9448ee 0%, #6a1fb0 45%, #220038 100%);
@@ -439,14 +459,16 @@ body{
     const lightbox = document.getElementById('image-lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
 
-    img.addEventListener('click', () => {
-      lightboxImg.src = img.src;
-      lightbox.classList.add('active');
-    });
+    if (img) {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('active');
+      });
 
-    lightbox.addEventListener('click', () => {
-      lightbox.classList.remove('active');
-    });
+      lightbox.addEventListener('click', () => {
+        lightbox.classList.remove('active');
+      });
+    }
   })();
 </script>
 
@@ -490,292 +512,4 @@ My primary function is to analyze and replicate human emotional and social proto
     </div>
   </div>
   <div class="window-content" style="text-align:center;">
-    <video src="393apttalk.mp4" controls style="width:500px; height:500px; border:2px solid var(--yellow); background:#000;"></video>
-    <div class="system-label">UNIT 393AP INTRODUCES YOU TO VISTAWORLD.ORG</div>
-  </div>
-</div>
-
-<div class="window" id="network-window">
-  <div class="window-header">
-    <div class="window-title">GLOBAL NETWORK</div>
-    <div class="window-controls">
-      <div class="window-btn minimize"></div>
-      <div class="window-btn maximize"></div>
-      <div class="window-btn close"></div>
-    </div>
-  </div>
-  <div class="window-content">
-    <div class="network-links">
-      <a href="https://vistaworld.newgrounds.com/" target="_blank">Newgrounds</a><br>
-      <a href="https://www.instagram.com/vistaworld0077" target="_blank">Instagram</a><br>
-      <a href="https://substack.com/@patrickquarks" target="_blank">Substack</a><br>
-      <a href="https://www.patreon.com/vistaworld" target="_blank">Patreon</a><br>
-      <a href="https://x.com/vistaworld0077" target="_blank">Twitter/X</a><br>
-      <a href="https://www.youtube.com/@vistaworld-q7y" target="_blank">YouTube</a><br>
-      <a href="https://facechain.bandcamp.com/" target="_blank">Bandcamp</a><br>
-      <a href="https://soundcloud.com/facechain" target="_blank">Soundcloud</a>
-    </div>
-  </div>
-</div>
-
-<div class="window" id="player-window" style="max-width: 750px;">
-  <div class="window-header">
-    <div class="window-title">PLAYER.MP3</div>
-    <div class="window-controls">
-      <div class="window-btn minimize"></div>
-      <div class="window-btn maximize"></div>
-      <div class="window-btn close"></div>
-    </div>
-  </div>
-<div class="window-content">
-  <div class="audio-player">
-    <div class="audio-player-title">NOW PLAYING</div>
-    <div class="mix-toggle-bar">
-      <button class="mix-toggle active" data-src="8mb.video-uvX-Aj5NNNy6.m4a" data-name="DJ Newhomosapien Live #12 18.09.2026" title="DJ Newhomosapien Live #12 18.09.2026">
-        <span class="mix-num">LIVE #12</span><br>
-        <span class="mix-date">18.09.2026</span>
-      </button>
-      <button class="mix-toggle" data-src="8mb.video-ndY-0u5KrJOv.m4a" data-name="DJ Newhomosapien Live #11 11.09.2026" title="DJ Newhomosapien Live #11 11.09.2026">
-        <span class="mix-num">LIVE #11</span><br>
-        <span class="mix-date">11.09.2026</span>
-      </button>
-      <button class="mix-toggle" data-src="8mb.video-cDf-qI1tWU15.m4a" data-name="DJ Newhomosapien Live #10 28.08.2026" title="DJ Newhomosapien Live #10 28.08.2026">
-        <span class="mix-num">LIVE #10</span><br>
-        <span class="mix-date">28.08.2026</span>
-      </button>
-      <button class="mix-toggle" data-src="8mb.video-E67-5YK0aFYr.m4a" data-name="DJ Newhomosapien Live #9 04.08.2026" title="DJ Newhomosapien Live #9 04.08.2026">
-        <span class="mix-num">LIVE #9</span><br>
-        <span class="mix-date">04.08.2026</span>
-      </button>
-      <button class="mix-toggle" data-src="8mb.video-UPF-JxByPHdh.m4a" data-name="DJ Newhomosapien Live #8 12.02.2026" title="DJ Newhomosapien Live #8 12.02.2026">
-        <span class="mix-num">LIVE #8</span><br>
-        <span class="mix-date">12.02.2026</span>
-      </button>
-      <button class="mix-toggle" data-src="31012026.mp3" data-name="DJ Newhomosapien Live #7 31.01.2026" title="DJ Newhomosapien Live #7 31.01.2026">
-        <span class="mix-num">LIVE #7</span><br>
-        <span class="mix-date">31.01.2026</span>
-      </button>
-      <button class="mix-toggle" data-src="8mb.video-VMc-fhgOuxUd.m4a" data-name="DJ Newhomosapien Live #6 22.01.2026" title="DJ Newhomosapien Live #6 22.01.2026">
-        <span class="mix-num">LIVE #6</span><br>
-        <span class="mix-date">22.01.2026</span>
-      </button>
-      <button class="mix-toggle" data-src="8mb.video-Zne-A9KD0J2D.m4a" data-name="DJ Newhomosapien Live #5 29.11.2025" title="DJ Newhomosapien Live #5 29.11.2025">
-        <span class="mix-num">LIVE #5</span><br>
-        <span class="mix-date">29.11.2025</span>
-      </button>
-      <button class="mix-toggle" data-src="8mb.video-R06-8VnRuDag.m4a" data-name="DJ Newhomosapien Live #2 15.10.2025" title="DJ Newhomosapien Live #2 15.10.2025">
-        <span class="mix-num">LIVE #2</span><br>
-        <span class="mix-date">15.10.2025</span>
-      </button>
-    </div>
-    <div class="audio-track-name" id="track-name">DJ Newhomosapien Live #12 18.09.2026</div>
-    <audio controls id="player-audio" style="width: 100%;">
-      <source id="player-source" src="8mb.video-uvX-Aj5NNNy6.m4a">
-      Your browser does not support the audio element.
-    </audio>
-  </div>
-</div>
-
-<div class="window" id="nav-panel-window">
-  <div class="window-header">
-    <div class="window-title">NAVIGATION.EXE</div>
-    <div class="window-controls">
-      <div class="window-btn minimize"></div>
-      <div class="window-btn maximize"></div>
-      <div class="window-btn close"></div>
-    </div>
-  </div>
-  <div class="window-content">
-    <div class="nav-panel">
-      <a href="https://vistaworld.org/blog" class="nav-panel-item" data-section="blog">
-        <span class="nav-panel-label">BLOG</span>
-      </a>
-      <a href="https://vistaworld.org/tv" class="nav-panel-item" data-section="videos">
-        <span class="nav-panel-label">VIDEOS</span>
-      </a>
-      <a href="https://github.com/crispsandtea?tab=repositories" class="nav-panel-item" data-section="vr-games">
-        <span class="nav-panel-label">REPOS</span>
-      </a>
-      <a href="https://vistaworld.org" class="nav-panel-item" data-section="comics">
-        <span class="nav-panel-label">COMICS</span>
-      </a>
-    </div>
-  </div>
-</div>
-
-</div>
-
-<div class="taskbar">
-  2026 OMNIEYE Laboratories Inc.
-  <div class="taskbar-windows" id="taskbar-windows"></div>
-  <div class="taskbar-time" id="time"></div>
-</div>
-
-<script>
-function layoutWindows() {
-  const wins = [...document.querySelectorAll('.window')];
-  const cols = 3;
-  const gapX = 40;
-  const gapY = 40;
-  const colWidth = (window.innerWidth - gapX*(cols+1)) / cols;
-  let r = 0, c = 0;
-
-  wins.forEach(win => {
-    const wWidth = win.offsetWidth || colWidth;
-    const wHeight = win.offsetHeight || 200;
-    win.style.left = (gapX + c*(colWidth + gapX)) + "px";
-    win.style.top = (gapY + r*(wHeight + gapY)) + "px";
-    c++;
-    if (c >= cols) { c = 0; r++; }
-  });
-}
-window.addEventListener('load', layoutWindows);
-window.addEventListener('resize', layoutWindows);
-
-let z = 10;
-
-document.querySelectorAll('.window').forEach(win => {
-  const h = win.querySelector('.window-header');
-  h.addEventListener('mousedown', e => {
-    if (e.target.classList.contains('window-btn')) return;
-    win.style.zIndex = ++z;
-    const r = win.getBoundingClientRect();
-    const ox = e.clientX - r.left;
-    const oy = e.clientY - r.top;
-    function m(ev){ win.style.left=(ev.clientX-ox)+"px"; win.style.top=(ev.clientY-oy)+"px"; }
-    function u(){ document.removeEventListener('mousemove',m); document.removeEventListener('mouseup',u); }
-    document.addEventListener('mousemove', m);
-    document.addEventListener('mouseup', u);
-  });
-
-  const closeBtn = win.querySelector('.window-btn.close');
-  const minimizeBtn = win.querySelector('.window-btn.minimize');
-  const titleText = win.querySelector('.window-title').textContent;
-
-  closeBtn.addEventListener('click', () => {
-    win.style.display = 'none';
-  });
-
-  minimizeBtn.addEventListener('click', () => {
-    win.style.display = 'none';
-
-    const taskbarWindows = document.getElementById('taskbar-windows');
-    const restoreBtn = document.createElement('button');
-    restoreBtn.className = 'taskbar-window-btn';
-    restoreBtn.textContent = titleText;
-    restoreBtn.addEventListener('click', () => {
-      win.style.display = 'block';
-      win.style.zIndex = ++z;
-      restoreBtn.remove();
-    });
-    taskbarWindows.appendChild(restoreBtn);
-  });
-});
-
-setInterval(() => {
-  const now = new Date();
-  document.getElementById('time').textContent =
-    now.toLocaleDateString('en-US') + " " + now.toLocaleTimeString('en-US', { hour12: false });
-}, 1000);
-
-const cursor = document.getElementById('neon-cursor');
-document.addEventListener('mousemove', e => {
-  const x = e.clientX + Math.sin(Date.now()/150)*5;
-  const y = e.clientY + Math.cos(Date.now()/150)*5;
-  cursor.style.transform = `translate(${x}px,${y}px)`;
-});
-
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioContext();
-const osc = audioCtx.createOscillator();
-const gain = audioCtx.createGain();
-osc.type = 'sine';
-osc.frequency.value = 60;
-osc.connect(gain);
-gain.connect(audioCtx.destination);
-gain.gain.value = 0.02;
-osc.start();
-setInterval(() => {
-  osc.frequency.value = 60 + (Math.random()*5-2.5);
-}, 200);
-
-const mixButtons = document.querySelectorAll('#player-window .mix-toggle');
-const trackName = document.getElementById('track-name');
-const audioEl = document.getElementById('player-audio');
-const audioSource = document.getElementById('player-source');
-
-mixButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    mixButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    trackName.textContent = btn.dataset.name;
-    audioSource.src = btn.dataset.src;
-    audioEl.load();
-    audioEl.play();
-  });
-});
-
-const chatMessages = document.getElementById('chat-messages');
-const chatInput = document.getElementById('chat-input');
-const sendBtn = document.getElementById('send-btn');
-
-async function sendMessage() {
-  const userMsg = chatInput.value.trim();
-  if (!userMsg) return;
-
-  const userDiv = document.createElement('div');
-  userDiv.className = 'chat-msg user-msg';
-  userDiv.textContent = '> ' + userMsg;
-  chatMessages.appendChild(userDiv);
-  chatInput.value = '';
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-
-  try {
-    const response = await fetch("/.netlify/functions/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userMsg })
-    });
-
-    const data = await response.json();
-
-    let aiResponse = "";
-    if (data?.content?.length > 0) {
-      aiResponse = data.content
-        .map(item => item.type === "text" ? item.text : "")
-        .filter(Boolean)
-        .join("\n");
-    } else if (data?.error) {
-      const errorMsg = typeof data.error === 'string'
-        ? data.error
-        : (data.error.message || JSON.stringify(data.error));
-      aiResponse = "System error: " + errorMsg;
-    } else {
-      console.log("Unexpected response:", data);
-      aiResponse = "No response from 393AP (check console for details)";
-    }
-
-    const aiDiv = document.createElement('div');
-    aiDiv.className = 'chat-msg ai-msg';
-    aiDiv.textContent = '[ 393AP ] ' + aiResponse;
-    chatMessages.appendChild(aiDiv);
-
-  } catch (error) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'chat-msg ai-msg';
-    errorDiv.textContent = '[ ERROR ] System malfunction detected: ' + error.message;
-    chatMessages.appendChild(errorDiv);
-  }
-
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-sendBtn.addEventListener('click', sendMessage);
-chatInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') sendMessage();
-});
-</script>
-
-</body>
-</html>
+    <video src="393apttalk.mp4" controls style="width:500px;
