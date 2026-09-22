@@ -242,6 +242,24 @@ body{
 }
 #send-btn:hover{background: radial-gradient(circle at 35% 30%, #6a1fb0, #2a0045);}
 
+.speak-btn{
+  display:inline-block;
+  margin-top:8px;
+  padding:4px 10px;
+  background: radial-gradient(circle at 35% 30%, var(--purple-mid), #1a0030);
+  border:1px solid var(--yellow);
+  color: var(--green);
+  font-family:Verdana, Geneva, sans-serif;
+  font-weight:bold;
+  font-size:9px;
+  letter-spacing:0.5px;
+  cursor:pointer;
+  border-radius:10px;
+}
+.speak-btn:hover{background: radial-gradient(circle at 35% 30%, #6a1fb0, #2a0045);}
+.speak-btn:disabled{opacity:0.5;cursor:wait;}
+.speak-btn.playing{border-color:var(--green);box-shadow:0 0 6px var(--green);}
+
 .mix-toggle-bar {
   display: flex;
   flex-wrap: wrap;
@@ -756,6 +774,78 @@ const chatMessages = document.getElementById('chat-messages');
 const chatInput = document.getElementById('chat-input');
 const sendBtn = document.getElementById('send-btn');
 
+let currentSpeechAudio = null;
+
+async function speakText(text, btn) {
+  // Stop any currently playing speech before starting a new one.
+  if (currentSpeechAudio) {
+    currentSpeechAudio.pause();
+    currentSpeechAudio.currentTime = 0;
+    document.querySelectorAll('.speak-btn.playing').forEach(b => {
+      b.classList.remove('playing');
+      b.textContent = '\u25B6 SPEAK';
+    });
+  }
+
+  btn.disabled = true;
+  const originalLabel = btn.textContent;
+  btn.textContent = 'LOADING...';
+
+  try {
+    const response = await fetch("/.netlify/functions/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: text })
+    });
+
+    if (!response.ok) {
+      throw new Error("TTS request failed (" + response.status + ")");
+    }
+
+    const audioBlob = await response.blob();
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audio = new Audio(audioUrl);
+    currentSpeechAudio = audio;
+
+    btn.disabled = false;
+    btn.classList.add('playing');
+    btn.textContent = '\u25A0 STOP';
+
+    btn.onclick = () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+
+    audio.addEventListener('ended', () => {
+      btn.classList.remove('playing');
+      btn.textContent = '\u25B6 SPEAK';
+      btn.onclick = () => speakText(text, btn);
+      URL.revokeObjectURL(audioUrl);
+      if (currentSpeechAudio === audio) currentSpeechAudio = null;
+    });
+
+    audio.addEventListener('pause', () => {
+      if (audio.currentTime === 0 || audio.ended) return;
+    });
+
+    await audio.play();
+
+  } catch (error) {
+    btn.disabled = false;
+    btn.textContent = 'ERROR';
+    console.error("TTS error:", error);
+    setTimeout(() => { btn.textContent = originalLabel; }, 2000);
+  }
+}
+
+function addSpeakButton(container, text) {
+  const speakBtn = document.createElement('button');
+  speakBtn.className = 'speak-btn';
+  speakBtn.textContent = '\u25B6 SPEAK';
+  speakBtn.onclick = () => speakText(text, speakBtn);
+  container.appendChild(speakBtn);
+}
+
 async function sendMessage() {
   const userMsg = chatInput.value.trim();
   if (!userMsg) return;
@@ -794,7 +884,13 @@ async function sendMessage() {
 
     const aiDiv = document.createElement('div');
     aiDiv.className = 'chat-msg ai-msg';
-    aiDiv.textContent = '[ 393AP ] ' + aiResponse;
+
+    const textSpan = document.createElement('div');
+    textSpan.textContent = '[ 393AP ] ' + aiResponse;
+    aiDiv.appendChild(textSpan);
+
+    addSpeakButton(aiDiv, aiResponse);
+
     chatMessages.appendChild(aiDiv);
 
   } catch (error) {
