@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>vistaworld // HLSP VOL 0</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
+
+:root{
+  --cyan:#00ffea;
+  --magenta:#ff00ff;
+  --blue:#4169ff;
+  --yellow:#ffff00;
+  --green:#39ff14;
+  --purple-deep:#2a0a4a;
+  --purple-mid:#4b0082;
+}
+
+body{
+  background:#000;
+  font-family:Verdana, Geneva, sans-serif;
+  cursor: none;
+  color: var(--green);
+}
+
+#neon-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, #00ffea 0%, #ff00ff 60%, #4169ff 100%);
+  box-shadow: 0 0 10px #00ffea, 0 0 20px #ff00ff, 0 0 30px #4169ff;
+  z-index: 9999;
+}
+
+.desktop-bg{
+  position:fixed;
+  inset:0;
+  background:url("vistaworld1.png") center/cover no-repeat;
+  z-index:0;
+}
+.desktop-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+}
+
+.crt-overlay {
+  position: fixed;
+  inset:0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0,
+    rgba(0,0,0,0.03) 1px
+  );
+  mix-blend-mode: overlay;
+  animation: flicker 0.15s infinite;
+  z-index:1000;
+}
+@keyframes flicker {
+  0%{opacity:0.05;}
+  50%{opacity:0.15;}
+  100%{opacity:0.05;}
+}
+
+.window{
+  position:absolute;
+  background: linear-gradient(160deg, var(--purple-deep) 0%, #14001f 45%, #000000 100%);
+  border:2px solid var(--yellow);
+  border-radius:8px;
+  box-shadow:0 0 30px rgba(0,0,0,0.8), 0 0 12px rgba(255,255,0,0.15);
+  overflow:hidden;
+}
+
+.window-header{
+  padding:8px 12px;
+  background:linear-gradient(#2a2a2a,#111);
+  border-bottom:2px solid var(--yellow);
+  cursor:move;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  user-select:none;
+}
+
+.window-title{
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:11px;
+  font-weight:bold;
+  color: var(--green);
+}
+
+.window-controls{display:flex;gap:6px;}
+.window-btn{width:14px;height:14px;border-radius:2px;cursor:pointer;}
+.close{background:#ff5f56;}
+.minimize{background:#ffbd2e;}
+.maximize{background:#27c93f;}
+
+.window-content{
+  padding:16px;
+  color: var(--green);
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:13px;
+  line-height:1.6;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+/* ---------- HLSP slideshow ---------- */
+#hlsp-window{
+  width:460px;
+  max-width:90vw;
+}
+
+.hlsp-image-stack{
+  position:relative;
+  width:100%;
+  cursor:pointer;
+}
+
+.hlsp-image{
+  width:100%;
+  height:auto;
+  display:block;
+  cursor:zoom-in;
+  transition:opacity 2s ease-in-out;
+}
+
+/* First image stays in normal flow so the stack keeps its height;
+   all other pages are layered on top of it. */
+.hlsp-image:not(:first-child){
+  position:absolute;
+  top:0;
+  left:0;
+  opacity:0;
+}
+.hlsp-image.active{opacity:1;}
+
+.hlsp-caption{
+  font-size:10px;
+  line-height:1.3;
+  margin-top:6px;
+}
+
+/* ---------- Lightbox ---------- */
+#hlsp-lightbox{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  z-index:6000;
+  align-items:center;
+  justify-content:center;
+}
+#hlsp-lightbox.open{display:flex;}
+
+#hlsp-lightbox-img{
+  max-width:85%;
+  max-height:85vh;
+  display:block;
+  object-fit:contain;
+  border:2px solid var(--yellow);
+  box-shadow:0 0 30px rgba(255,255,0,0.2);
+}
+
+#hlsp-lightbox button{
+  position:absolute;
+  background:transparent;
+  border:none;
+  color:#fff;
+  cursor:pointer;
+  line-height:1;
+}
+#hlsp-lightbox button:hover{color:var(--cyan);}
+#hlsp-close{top:20px;right:20px;font-size:28px;}
+#hlsp-prev{left:20px;top:50%;transform:translateY(-50%);font-size:36px;}
+#hlsp-next{right:20px;top:50%;transform:translateY(-50%);font-size:36px;}
+
+#hlsp-lightbox-caption{
+  position:absolute;
+  bottom:24px;
+  left:0;
+  width:100%;
+  text-align:center;
+  color:#ddd;
+  font-size:13px;
+}
+
+/* ---------- Taskbar ---------- */
+.taskbar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:50px;
+  background:linear-gradient(180deg, var(--purple-deep), #000);
+  border-top:2px solid var(--yellow);
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  z-index:500;
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:13px;
+  color: var(--green);
+}
+.taskbar-windows{
+  display:flex;
+  gap:8px;
+  margin-left:20px;
+  overflow-x:auto;
+}
+.taskbar-window-btn{
+  background: radial-gradient(circle at 35% 30%, var(--purple-mid), #1a0030);
+  border:1px solid var(--yellow);
+  color: var(--green);
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:11px;
+  padding:6px 10px;
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+  border-radius: 14px;
+}
+.taskbar-window-btn:hover{
+  background: radial-gradient(circle at 35% 30%, #6a1fb0, #2a0045);
+}
+.taskbar-time{margin-left:auto;color:var(--green);white-space:nowrap;}
+</style>
+</head>
+
+<body>
+<div class="desktop-bg"></div>
+<div class="crt-overlay"></div>
+<div id="neon-cursor"></div>
+
+<div class="desktop">
+
+  <div class="window" id="hlsp-window">
+    <div class="window-header">
+      <div class="window-title">HLSP_0.DOC</div>
+      <div class="window-controls">
+        <div class="window-btn minimize"></div>
+        <div class="window-btn maximize"></div>
+        <div class="window-btn close"></div>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="hlsp-image-stack" id="hlsp-stack">
+        <img src="HLSP page 1.png"  class="hlsp-image active" alt="HLSP page 1">
+        <img src="HLSP page 2.png"  class="hlsp-image" alt="HLSP page 2">
+        <img src="HLSP page 3.png"  class="hlsp-image" alt="HLSP page 3">
+        <img src="HLSP page 4.png"  class="hlsp-image" alt="HLSP page 4">
+        <img src="HLSP page 5.png"  class="hlsp-image" alt="HLSP page 5">
+        <img src="HLSP page 6.png"  class="hlsp-image" alt="HLSP page 6">
+        <img src="HLSP page 7.png"  class="hlsp-image" alt="HLSP page 7">
+        <img src="HLSP page 8.png"  class="hlsp-image" alt="HLSP page 8">
+        <img src="HLSP page 9.png"  class="hlsp-image" alt="HLSP page 9">
+        <img src="HLSP page 10.png" class="hlsp-image" alt="HLSP page 10">
+        <img src="HLSP page 11.png" class="hlsp-image" alt="HLSP page 11">
+        <img src="HLSP page 12.png" class="hlsp-image" alt="HLSP page 12">
+        <img src="HLSP page 13.png" class="hlsp-image" alt="HLSP page 13">
+        <img src="HLSP page 14.png" class="hlsp-image" alt="HLSP page 14">
+        <img src="HLSP page 15.png" class="hlsp-image" alt="HLSP page 15">
+        <img src="HLSP page 16.png" class="hlsp-image" alt="HLSP page 16">
+        <img src="HLSP page 17.png" class="hlsp-image" alt="HLSP page 17">
+        <img src="HLSP page 18.png" class="hlsp-image" alt="HLSP page 18">
+        <img src="HLSP page 19.png" class="hlsp-image" alt="HLSP page 19">
+        <img src="HLSP page 20.png" class="hlsp-image" alt="HLSP page 20">
+      </div>
+      <div class="hlsp-caption">'Read Human Love Synthesis Project Vol. 0 - Prototype: The Origin of System Unit 393AP and OMNIEYE Laboratories here.'</div>
+    </div>
+  </div>
+
+</div>
+
+<div id="hlsp-lightbox">
+  <button id="hlsp-close" aria-label="Close">×</button>
+  <button id="hlsp-prev" aria-label="Previous page">‹</button>
+  <img id="hlsp-lightbox-img" src="" alt="">
+  <button id="hlsp-next" aria-label="Next page">›</button>
+  <div id="hlsp-lightbox-caption"></div>
+</div>
+
+<div class="taskbar">
+  2026 OMNIEYE Laboratories Inc.
+  <div class="taskbar-windows" id="taskbar-windows"></div>
+  <div class="taskbar-time" id="time"></div>
+</div>
+
+<script>
+/* ---------- HLSP slideshow + lightbox ---------- */
+(function () {
+  const stack = document.getElementById('hlsp-stack');
+  const slides = Array.from(stack.querySelectorAll('.hlsp-image'));
+  const total = slides.length;
+  let current = 0;
+  let timer = null;
+
+  function showSlide(index) {
+    slides[current].classList.remove('active');
+    current = (index + total) % total;
+    slides[current].classList.add('active');
+  }
+
+  function startTimer() {
+    clearInterval(timer);
+    timer = setInterval(function () { showSlide(current + 1); }, 10000);
+  }
+  startTimer();
+
+  const lightbox = document.getElementById('hlsp-lightbox');
+  const lightboxImg = document.getElementById('hlsp-lightbox-img');
+  const lightboxCaption = document.getElementById('hlsp-lightbox-caption');
+  let lbIndex = 0;
+
+  function renderLightbox() {
+    lightboxImg.src = slides[lbIndex].getAttribute('src');
+    lightboxImg.alt = slides[lbIndex].alt;
+    lightboxCaption.textContent = 'Page ' + (lbIndex + 1) + ' / ' + total;
+  }
+
+  function openLightbox(index) {
+    lbIndex = index;
+    renderLightbox();
+    lightbox.classList.add('open');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    // Keep the small slideshow on the page you were just viewing
+    if (lbIndex !== current) showSlide(lbIndex);
+    startTimer();
+  }
+
+  function stepLightbox(offset) {
+    lbIndex = (lbIndex + offset + total) % total;
+    renderLightbox();
+  }
+
+  stack.addEventListener('click', function () {
+    openLightbox(current);
+  });
+
+  document.getElementById('hlsp-close').addEventListener('click', closeLightbox);
+  document.getElementById('hlsp-prev').addEventListener('click', function (e) {
+    e.stopPropagation();
+    stepLightbox(-1);
+  });
+  document.getElementById('hlsp-next').addEventListener('click', function (e) {
+    e.stopPropagation();
+    stepLightbox(1);
+  });
+
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') stepLightbox(-1);
+    if (e.key === 'ArrowRight') stepLightbox(1);
+  });
+})();
+
+/* ---------- Window layout ---------- */
+function layoutWindows() {
+  const wins = [...document.querySelectorAll('.window')];
+  const cols = 2;
+  const gapX = 40;
+  const gapY = 40;
+  const colWidth = (window.innerWidth - gapX * (cols + 1)) / cols;
+  let r = 0, c = 0;
+
+  wins.forEach(win => {
+    const wHeight = win.offsetHeight || 200;
+    win.style.left = (gapX + c * (colWidth + gapX)) + "px";
+    win.style.top = (gapY + r * (wHeight + gapY)) + "px";
+    c++;
+    if (c >= cols) { c = 0; r++; }
+  });
+}
+window.addEventListener('load', layoutWindows);
+window.addEventListener('resize', layoutWindows);
+
+/* ---------- Window dragging / close / minimize ---------- */
+let z = 10;
+
+document.querySelectorAll('.window').forEach(win => {
+  const h = win.querySelector('.window-header');
+  h.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('window-btn')) return;
+    win.style.zIndex = ++z;
+    const r = win.getBoundingClientRect();
+    const ox = e.clientX - r.left;
+    const oy = e.clientY - r.top;
+    function m(ev) { win.style.left = (ev.clientX - ox) + "px"; win.style.top = (ev.clientY - oy) + "px"; }
+    function u() { document.removeEventListener('mousemove', m); document.removeEventListener('mouseup', u); }
+    document.addEventListener('mousemove', m);
+    document.addEventListener('mouseup', u);
+  });
+
+  const closeBtn = win.querySelector('.window-btn.close');
+  const minimizeBtn = win.querySelector('.window-btn.minimize');
+  const titleText = win.querySelector('.window-title').textContent;
+
+  closeBtn.addEventListener('click', () => {
+    win.style.display = 'none';
+  });
+
+  minimizeBtn.addEventListener('click', () => {
+    win.style.display = 'none';
+
+    const taskbarWindows = document.getElementById('taskbar-windows');
+    const restoreBtn = document.createElement('button');
+    restoreBtn.className = 'taskbar-window-btn';
+    restoreBtn.textContent = titleText;
+    restoreBtn.addEventListener('click', () => {
+      win.style.display = 'block';
+      win.style.zIndex = ++z;
+      restoreBtn.remove();
+    });
+    taskbarWindows.appendChild(restoreBtn);
+  });
+});
+
+/* ---------- Clock ---------- */
+function updateClock() {
+  const now = new Date();
+  document.getElementById('time').textContent =
+    now.toLocaleDateString('en-US') + " " + now.toLocaleTimeString('en-US', { hour12: false });
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+/* ---------- Neon cursor ---------- */
+const cursor = document.getElementById('neon-cursor');
+document.addEventListener('mousemove', e => {
+  const x = e.clientX + Math.sin(Date.now() / 150) * 5;
+  const y = e.clientY + Math.cos(Date.now() / 150) * 5;
+  cursor.style.transform = `translate(${x - 10}px, ${y - 10}px)`;
+});
+
+/* ---------- Ambient hum (browsers require a click before audio can play) ---------- */
+(function () {
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+
+  const audioCtx = new AC();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = 60;
+  gain.gain.value = 0.02;
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+
+  setInterval(() => {
+    osc.frequency.value = 60 + (Math.random() * 5 - 2.5);
+  }, 200);
+
+  function resume() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  }
+  document.addEventListener('click', resume);
+  document.addEventListener('keydown', resume);
+})();
+</script>
+
+</body>
+</html>
