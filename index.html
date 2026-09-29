@@ -396,21 +396,28 @@ body{
   <div id="hlsp-lightbox-caption" style="position: absolute; bottom: 24px; left: 0; width: 100%; text-align: center; color: #ddd; font-size: 13px;"></div>
 </div>
 
+<style>
+  .hlsp-image { cursor: zoom-in; }
+</style>
+
 <script>
   (function() {
     const images = ["HMIS page 1d.png", "HLSP page 1b.png", "HLSP page 1.png"];
-    const captions = ["Human Machine Interface Studies Vol. 1: Body Regulation and Cognitive/Musculoskeletal Enhancement Systems", "Human Love Synthesis Project Vol. 1: A Tale of System Unit 393AP in Hyper City: Compliant Citizen or Corrupted Maverick?", "Human Love Synthesis Project Vol. 0: Prototype - The Origin of System Unit 393AP and OMNIEYE Laboratories"];
+    const captions = [
+      "Human Machine Interface Studies Vol. 1: Body Regulation and Cognitive/Musculoskeletal Enhancement Systems",
+      "Human Love Synthesis Project Vol. 1: A Tale of System Unit 393AP in Hyper City: Compliant Citizen or Corrupted Maverick?",
+      "Human Love Synthesis Project Vol. 0: Prototype - The Origin of System Unit 393AP and OMNIEYE Laboratories"
+    ];
 
-    const imageA = document.querySelector(".hlsp-image-a");
-    const imageB = document.querySelector(".hlsp-image-b");
-    const imageC = document.querySelector(".hlsp-image-C"); 
+    const slides = document.querySelectorAll(".hlsp-image-stack .hlsp-image");
     const stack = document.querySelector(".hlsp-image-stack");
-    let showingSecond = false;
+    let slide = 0;
 
+    // Crossfade through all slides every 10 seconds
     setInterval(function() {
-      showingSecond = !showingSecond;
-      imageA.style.opacity = showingSecond ? "0" : "1";
-      imageB.style.opacity = showingSecond ? "1" : "0";
+      slides[slide].style.opacity = "0";
+      slide = (slide + 1) % slides.length;
+      slides[slide].style.opacity = "1";
     }, 10000);
 
     const lightbox = document.getElementById("hlsp-lightbox");
@@ -431,8 +438,9 @@ body{
       lightboxCaption.textContent = captions[currentIndex];
     }
 
+    // Open the lightbox on whichever slide is currently showing
     stack.addEventListener("click", function() {
-      openLightbox(showingSecond ? 1 : 0);
+      openLightbox(slide);
     });
 
     document.getElementById("hlsp-close").addEventListener("click", function() {
@@ -452,72 +460,6 @@ body{
     });
   })();
 </script>
-
-<div id="image-lightbox">
-  <img id="lightbox-img" src="" alt="">
-</div>
-
-<style>
-  .hlsp-image { cursor: zoom-in; }
-
-  #image-lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    z-index: 5000;
-    align-items: center;
-    justify-content: center;
-    cursor: zoom-out;
-  }
-  #image-lightbox.active { display: flex; }
-  #lightbox-img {
-    max-width: 90vw;
-    max-height: 90vh;
-    border: 2px solid var(--yellow);
-    box-shadow: 0 0 30px rgba(255,255,0,0.2);
-  }
-</style>
-
-<script>
-  (function () {
-    const img = document.getElementById('hlsp-image');
-    const lightbox = document.getElementById('image-lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-
-    if (img) {
-      img.addEventListener('click', () => {
-        lightboxImg.src = img.src;
-        lightbox.classList.add('active');
-      });
-
-      lightbox.addEventListener('click', () => {
-        lightbox.classList.remove('active');
-      });
-    }
-  })();
-</script>
-
-
-<style>
-  #image-lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    z-index: 5000;
-    align-items: center;
-    justify-content: center;
-    cursor: zoom-out;
-  }
-  #image-lightbox.active { display: flex; }
-  #lightbox-img {
-    max-width: 90vw;
-    max-height: 90vh;
-    border: 2px solid var(--yellow);
-    box-shadow: 0 0 30px rgba(255,255,0,0.2);
-  }
-</style>
 
 <div class="window" id="intro-window" style="width: 420px; height: 320px;">
   <div class="window-header">
