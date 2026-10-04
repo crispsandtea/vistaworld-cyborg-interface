@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>vistaworld // Ghosts of the Past vs Engines of the Future: Part 1 </title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
+
+:root{
+  --cyan:#00ffea;
+  --magenta:#ff00ff;
+  --blue:#4169ff;
+  --yellow:#ffff00;
+  --green:#39ff14;
+  --purple-deep:#2a0a4a;
+  --purple-mid:#4b0082;
+}
+
+body{
+  background:#000;
+  font-family:Verdana, Geneva, sans-serif;
+  cursor: none;
+  color: var(--green);
+}
+
+#neon-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, #00ffea 0%, #ff00ff 60%, #4169ff 100%);
+  box-shadow: 0 0 10px #00ffea, 0 0 20px #ff00ff, 0 0 30px #4169ff;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s ease, box-shadow 0.2s ease;
+}
+
+.desktop-bg{
+  position:fixed;
+  inset:0;
+  background:url("vistaworld1.png") center/cover no-repeat;
+  z-index:0;
+}
+.desktop-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+}
+
+.crt-overlay {
+  position: fixed;
+  inset:0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0,
+    rgba(0,0,0,0.03) 1px
+  );
+  mix-blend-mode: overlay;
+  animation: flicker 0.15s infinite;
+  z-index:1000;
+}
+@keyframes flicker {
+  0%{opacity:0.05;}
+  50%{opacity:0.15;}
+  100%{opacity:0.05;}
+}
+
+.window{
+  position:absolute;
+  background: linear-gradient(160deg, var(--purple-deep) 0%, #14001f 45%, #000000 100%);
+  border:2px solid var(--yellow);
+  border-radius:8px;
+  box-shadow:0 0 30px rgba(0,0,0,0.8), 0 0 12px rgba(255,255,0,0.15);
+  overflow:hidden;
+}
+
+.window-header{
+  padding:8px 12px;
+  background:linear-gradient(#2a2a2a,#111);
+  border-bottom:2px solid var(--yellow);
+  cursor:move;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  user-select:none;
+}
+
+.window-title{
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:11px;
+  font-weight:bold;
+  color: var(--green);
+}
+
+.window-controls{display:flex;gap:6px;}
+.window-btn{width:14px;height:14px;border-radius:2px;cursor:pointer;}
+.close{background:#ff5f56;}
+.minimize{background:#ffbd2e;}
+.maximize{background:#27c93f;}
+
+.window-content{
+  padding:16px;
+  color: var(--green);
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:13px;
+  line-height:1.6;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.logo-text{
+  font-family:Verdana, Geneva, sans-serif;
+  font-weight:bold;
+  font-size:44px;
+  white-space:nowrap;
+  color:var(--green);
+  text-shadow:3px 3px 0 var(--magenta),6px 6px 0 var(--cyan);
+}
+
+.essay-title {
+  color: var(--green);
+  font-family: Verdana, Geneva, sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 16px;
+  line-height: 1.6;
+  text-shadow: 0 0 8px rgba(57,255,20,0.4);
+}
+
+.essay-author {
+  color: var(--magenta);
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.essay-content p {
+  margin-bottom: 16px;
+}
+
+.essay-content h2 {
+  color: var(--yellow);
+  font-size: 16px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.video-link-window .window-content{
+  max-height: none;
+  overflow-y: visible;
+  padding: 0;
+}
+.video-link-btn{
+  display:block;
+  position:relative;
+  width:100%;
+  text-decoration:none;
+}
+.video-link-btn img{
+  display:block;
+  width:100%;
+  height:auto;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+.video-link-btn:hover img{
+  filter: drop-shadow(0 0 14px var(--green)) brightness(1.08);
+  transform: scale(1.01);
+}
+.video-link-caption{
+  padding:10px 14px;
+  text-align:center;
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:0.5px;
+  color: var(--green);
+  background: linear-gradient(#111, #0a0a0a);
+  border-top:2px solid var(--yellow);
+}
+
+.taskbar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:50px;
+  background:linear-gradient(180deg, var(--purple-deep), #000);
+  border-top:2px solid var(--yellow);
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  z-index:500;
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:13px;
+  color: var(--green);
+}
+.taskbar-windows{
+  display:flex;
+  gap:8px;
+  margin-left:20px;
+  overflow-x:auto;
+}
+.taskbar-window-btn{
+  background: radial-gradient(circle at 35% 30%, var(--purple-mid), #1a0030);
+  border:1px solid var(--yellow);
+  color: var(--green);
+  font-family:Verdana, Geneva, sans-serif;
+  font-size:11px;
+  padding:6px 10px;
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+  border-radius: 14px;
+}
+.taskbar-window-btn:hover{
+  background: radial-gradient(circle at 35% 30%, #6a1fb0, #2a0045);
+}
+.taskbar-time{margin-left:auto;color:var(--green);white-space:nowrap;}
+</style>
+</head>
+
+<body>
+<div class="desktop-bg"></div>
+<div class="crt-overlay"></div>
+<div id="neon-cursor"></div>
+
+<div class="desktop">
+
+<div class="window" id="logo-window">
+  <div class="window-header">
+    <div class="window-title">LOGO.PNG</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <img src="OMNIEYE2.png" alt="vistaworld" class="logo-image">
+  </div>
+</div>
+
+<div class="window video-link-window" id="video-window" style="width: 360px;">
+  <div class="window-header">
+    <div class="window-title">WATCH THE ANIMATED VIDEO ESSAY HERE</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <a href="https://youtu.be/kWB_WWcWZFM?si=adjJcRV7lZvWQZlJ" target="_blank" rel="noopener noreferrer" class="video-link-btn">
+      <img src="landfisher.png" alt="Watch the animated video essay">
+      <div class="video-link-caption">▶ WATCH THE ANIMATED VIDEO ESSAY HERE</div>
+    </a>
+  </div>
+</div>
+
+<div class="window" id="blog-window" style="width: 640px;">
+  <div class="window-header">
+    <div class="window-title">BLOG.TXT</div>
+    <div class="window-controls">
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+      <div class="window-btn close"></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="essay-content">
+      <div class="essay-title">The Ghosts of the Past vs. The Engines of the Future - Part 1 (Nick Land vs. Mark Fisher: Culture)</div>
+      <div class="essay-author">3 October 2026. Written by Patrick Quarks.</div>
+      
+      <p> Nick Land and Mark Fisher erupted from the same Warwick milieu of the 1990s, creating an immensely influential group called Cybernetic Culture Research Unit (CCRU). Both were early in seeing that in the late twentieth century, and continuing into the turn of the millennium, that the future had stalled. Each decade of popular culture since the advent of popular culture after World War II had brought a new sound, a new look, a new culture, and a new gamut of ideology. A refreshing sense of what the future would become. By the 2000s, many sensed, including those from CCRU, that “the future” had begun to churn on itself and devour nostalgia from past futures. The diet of CCRU from the 90s that spun jungle music, sputtered French theory, and practiced cybernetic teleology had exploded like a supernova into separate directions by the mid-2000s (CCRU).</p>
+<p>Fisher and Land began to diverge on how the concept of futurology would impact the present. For Fisher the future is behind us, in the promises that culture made and failed to keep (Fisher, Ghosts of My Life). For Land it is ahead of us and outside us, pulling the present toward something that does not need us to survive (Land). Culture is perhaps most prominent where this split in thinking can appear most exceptionally, being that through generative AI, we now have machines that generate culture at an industrial scale. However, this new AI culture is neither a ghost of the past, nor a mechanical interlocutor; as it lacks friction. The thing that makes a medium costly, imperfect, or resistant. The characteristics of each medium, the hiss of a vinyl record, file upload limits and compression, etc. As Canadian English professor and infamous philosopher Marshall McLuhan said, “the medium is the message,” (McLuhan).</p>
+<p>French philosopher Jacques Derrida coined the term hauntology in his seminal book Specters of Marx (1993), as a pun on ontology, for what is neither simply present nor simply absent. As a ghost of what acts on us without existing in the fullest sense meaning of the word. Fisher began to use this term outside of philosophy and in music criticism, complaining in the early 2000s that a song from 2005 could be plucked into 1995 without sounding out of place (Fisher, Ghosts of My Life). To Fisher, hauntology gave the essence of a looming virtual specter, an agent that keeps forming unrealized possibility to a present that has not ascertained it. He used the term to name the experience of living inside what he called, borrowing from Franco Berardi, "the slow cancellation of the future.”</p>
+<p>Fisher championed artists like Burial, Boards of Canada, the Caretaker, as artists that weren’t dealing in shameless nostalgia, but mourning a future that never arrived. The idea that technology and the state would herald a shared tomorrow. The ghost is not a person who died but an expectation that was never allowed to arrive. Fisher argued in his essay on crackle that the imperfections of a medium, like tape or record hiss, defined the essence of the mediums of their respective time. That the imperfections are apart of the medium’s character, harking McLuhan before, that the medium is apart of and is itself the content, not just the message (McLuhan).</p>
+<p>Land had taken a different approach that did not mourn a culture’s heritage or lineage as something to be grieved or preserved. Taking inspiration from 90s jungle music, with its sub-bass frequencies and inhuman tempos, had begun to resemble a human-machine hybrid assemblage irrespective of any individual intent, but a machine or a desiring-machine (Deleuze) that merely produced. The theoretical engine behind this is hyperstition (Carstens): fictions that make themselves real by circulating until they reorganise the world that produced them. In that picture the future is not an absence we mourn but a cause we are already downstream of. Humanity and its flourishing is merely a coincidental byproduct of the mechanic super-processes taking place. Capital, in Land's most famous formulation, is an intelligence assembling itself backward through time, and human culture is one of its raw materials (Land). On this view the stalled culture Fisher describes is not a loss. Novelty has migrated to substrates (markets, protocols, networks) that human aesthetic experience no longer tracks.</p> 
+<p>To illustrate the essence of the dichotomy between Land and Fisher, consider sampling. Consider a drum break, Fisher’s hauntological echoes would want to preserve the characteristics of it, the decay, the pitch, etc, are presented obviously to showcase that the sample and the person behind it are no longer. Now consider the Amen break (The Winstons), a few seconds of drumming from a 1969 B-side that jungle producers pitched, sped up and sliced into the engine of an entire genre. By the time it reaches a jungle track, the origin is nearly irrelevant. It is consumed as raw material for something that sounds like nothing before it. Preserve it or burn it.</p>
+<p>Generative AI can be analyzed in both a Fisherian and Landian sense. In Fisher’s case, the distinction from hauntology is obvious, models are trained on the gamut of the output of all human production, past and present. The past can be remixed infinitely and freely at zero cost, producing eerie and surreal remixes of past, commonly shared ephemera like AI Beatles remixes. If the cancellation of the future meant culture folding in on its own past, this looks like the endpoint.</p>
+<p>For Land’s case, the analogy is just as direct, culture is being produced beyond any human intention, at speeds faster than any of us can comprehend. Bizarre examples of this occurring can include Tung Tung Sahur and Cappucina Ballerina. That is hyperstition in something close to its textbook form, and a Landian would say the machine is doing what culture always wanted to do once the humans stopped getting in the way.</p>
+<p>Interpreting how culture is affected by generative AI through Fisher’s lens, the ghost exists but with no haunting. The crackle of a vinyl record, the hiss of a tape, become meaningless when there is no gap between listener and medium (Fisher, “The Metaphysics”). Fisher’s perception of hauntology only works because the medium has friction and the listener has a witness's relation to it. Generative systems close that gap, there is no imperfection in a diffused model. When a vintage texture appears, it is a filter laid over a surface that never aged. Nothing is mourned because nothing was lost in transit; there was no transit. What the machine produces is not hauntological but post-haunting: a ghost with no death behind it. That is arguably worse for Fisher's thesis than nostalgia, because nostalgia at least hurts.</p>
+<p>Land’s thesis goes in the opposite direction. Acceleration needs contact with something the system did not produce: noise, resistance, an outside. Jungle was not created in a vacuum, it thrived and was fed by sound-system culture, by specific rooms and bodies and drugs and pirate-radio geography, an ecology of constraint that the music pushed against. A model trained on its own outputs does not produce novelty, but averages. Watch any video of an AI producing outputs based on its previous outputs and you will see it degrade each time (Shumailov). Same thing happens when you copy a VHS back on itself. The cultural machine now arriving is neither ghost nor engine, but is a very large, very fast mean; a monoculture.</p>
+<p>Thus, the shared diagnosis stands but requires an amendment. What disappeared from culture was not the future and not the past. It was friction: the cost of making something, the scarcity of attention, the imperfection of the channel, the possibility of being wrong in front of a witness. Fisher's ghosts and Land's engines both run on it. Ghosts need a degraded medium to be heard, and engines need an outside to push against.</p>
+<p>The live cultural question is not nostalgia versus acceleration. The real condition is surprise, and what conditions can make surprise possible. The people who build or preserve a medium with edges will create that new surprise: instruments, scenes, formats, scarcities, rooms. A producer who builds a noisy channel on purpose is not being nostalgic, they are manufacturing the outside that the smooth systems cannot supply.</p>
+<p>That shifts the argument somewhere the next essay has to follow. If friction is the scarce resource, then who controls the media, the platforms and the means of making is a political question before it is an aesthetic one. Fisher thought capitalism had lost the ability to produce an outside and could only simulate one. Land thought capitalism was the outside. Part 2 asks which of them is right when the thing being accelerated is no longer culture but the economy itself.</p>
+
+<p>Bibliography</p>
+<p>CCRU (Cybernetic Culture Research Unit). Abstract Culture: Digital Hyperstition (1999), which contains the "Ccru Glossary."</p>
+<p>Berardi, Franco "Bifo." After the Future. Edited by Gary Genosko and Nicholas Thoburn. Oakland: AK Press, 2011.</p>
+<p>Carstens, Delphi, and Nick Land. "Hyperstition: An Introduction: Delphi Carstens interviews Nick Land." 2009.</p>
+<p>Deleuze, Gilles, and Félix Guattari. Anti-Oedipus: Capitalism and Schizophrenia. Translated by Robert Hurley, Mark Seem, and Helen R. Lane. New York: Viking Press, 1977.</p>
+<p>Deleuze, Gilles, and Félix Guattari. A Thousand Plateaus: Capitalism and Schizophrenia. Translated by Brian Massumi. Minneapolis: University of Minnesota Press, 1987.</p>
+<p>Derrida, Jacques. Specters of Marx: The State of the Debt, the Work of Mourning, and the New International. Translated by Peggy Kamuf. New York: Routledge, 1994. Originally published as Spectres de Marx (Paris: Galilée, 1993).</p>
+<p>Fisher, Mark. Ghosts of My Life: Writings on Depression, Hauntology and Lost Futures. Winchester, UK: Zero Books, 2014.</p>
+<p>Fisher, Mark. "The Metaphysics of Crackle: Afrofuturism and Hauntology." Dancecult: Journal of Electronic Dance Music Culture 5, no. 2 (2013): 42–55. https://doi.org/10.12801/1947-5403.2013.05.02.03.</p>
+<p>Land, Nick. Fanged Noumena: Collected Writings 1987–2007. Edited by Ray Brassier and Robin Mackay. Falmouth: Urbanomic; New York: Sequence Press, 2011.</p>
+<p>McLuhan, Marshall. Understanding Media: The Extensions of Man. New York: McGraw-Hill, 1964.</p>
+<p>Shumailov, Ilia, Zakhar Shumaylov, Yiren Zhao, Nicolas Papernot, Ross Anderson, and Yarin Gal. "AI Models Collapse When Trained on Recursively Generated Data." Nature 631 (2024): 755–759. https://doi.org/10.1038/s41586-024-07566-y.</p>
+<p>The Winstons. "Amen, Brother." B-side of "Color Him Father." Metromedia, 1969.</p>
+
+
+</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="taskbar">
+  2026 OMNIEYE Laboratories Inc.
+  <div class="taskbar-windows" id="taskbar-windows"></div>
+  <div class="taskbar-time" id="time"></div>
+</div>
+
+<script>
+function layoutWindows() {
+  const wins = [...document.querySelectorAll('.window')];
+  const cols = 2;
+  const gapX = 40;
+  const gapY = 40;
+  const colWidth = (window.innerWidth - gapX*(cols+1)) / cols;
+  let r = 0, c = 0;
+
+  wins.forEach(win => {
+    const wWidth = win.offsetWidth || colWidth;
+    const wHeight = win.offsetHeight || 200;
+    win.style.left = (gapX + c*(colWidth + gapX)) + "px";
+    win.style.top = (gapY + r*(wHeight + gapY)) + "px";
+    c++;
+    if (c >= cols) { c = 0; r++; }
+  });
+}
+window.addEventListener('load', layoutWindows);
+window.addEventListener('resize', layoutWindows);
+
+let z = 10;
+
+document.querySelectorAll('.window').forEach(win => {
+  const h = win.querySelector('.window-header');
+  h.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('window-btn')) return;
+    win.style.zIndex = ++z;
+    const r = win.getBoundingClientRect();
+    const ox = e.clientX - r.left;
+    const oy = e.clientY - r.top;
+    function m(ev){ win.style.left=(ev.clientX-ox)+"px"; win.style.top=(ev.clientY-oy)+"px"; }
+    function u(){ document.removeEventListener('mousemove',m); document.removeEventListener('mouseup',u); }
+    document.addEventListener('mousemove', m);
+    document.addEventListener('mouseup', u);
+  });
+
+  const closeBtn = win.querySelector('.window-btn.close');
+  const minimizeBtn = win.querySelector('.window-btn.minimize');
+  const titleText = win.querySelector('.window-title').textContent;
+
+  closeBtn.addEventListener('click', () => {
+    win.style.display = 'none';
+  });
+
+  minimizeBtn.addEventListener('click', () => {
+    win.style.display = 'none';
+
+    const taskbarWindows = document.getElementById('taskbar-windows');
+    const restoreBtn = document.createElement('button');
+    restoreBtn.className = 'taskbar-window-btn';
+    restoreBtn.textContent = titleText;
+    restoreBtn.addEventListener('click', () => {
+      win.style.display = 'block';
+      win.style.zIndex = ++z;
+      restoreBtn.remove();
+    });
+    taskbarWindows.appendChild(restoreBtn);
+  });
+});
+
+setInterval(() => {
+  const now = new Date();
+  document.getElementById('time').textContent =
+    now.toLocaleDateString('en-US') + " " + now.toLocaleTimeString('en-US', { hour12: false });
+}, 1000);
+
+const cursor = document.getElementById('neon-cursor');
+document.addEventListener('mousemove', e => {
+  const x = e.clientX + Math.sin(Date.now()/150)*5;
+  const y = e.clientY + Math.cos(Date.now()/150)*5;
+  cursor.style.transform = `translate(${x}px,${y}px)`;
+});
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+osc.type = 'sine';
+osc.frequency.value = 60;
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+gain.gain.value = 0.02;
+osc.start();
+setInterval(() => {
+  osc.frequency.value = 60 + (Math.random()*5-2.5);
+}, 200);
+</script>
+
+</body>
+</html>
